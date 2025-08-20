@@ -5,9 +5,19 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { Mantra } from '@/lib/types'
-import { addSession, getTodaysSessions, getTotalSessions } from '@/lib/mantra-service'
-import { Play, RotateCcw, Target } from 'lucide-react'
+import { addSession, getTodaysSessions, getTotalSessions, saveSessions, getSessions } from '@/lib/mantra-service'
+import { Play, RotateCcw, Target, AlertTriangle } from 'lucide-react'
 
 interface MantraListProps {
   mantras: Mantra[]
@@ -16,6 +26,8 @@ interface MantraListProps {
 
 export function MantraList({ mantras, onUpdate }: MantraListProps) {
   const [sessions, setSessions] = useState<Record<string, number>>({})
+  const [resetMantraId, setResetMantraId] = useState<string | null>(null)
+  const [showResetDialog, setShowResetDialog] = useState(false)
 
   // Initialize session counts
   useEffect(() => {
@@ -48,11 +60,55 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
     }, 100)
   }
 
-  const handleResetRepetitions = (mantraId: string) => {
+  const handleResetClick = (mantraId: string) => {
+    setResetMantraId(mantraId)
+    setShowResetDialog(true)
+  }
+
+  const handleResetConfirm = () => {
+    if (!resetMantraId) return
+    
+    // Reset today's count
     setSessions(prev => ({
       ...prev,
-      [mantraId]: 0
+      [resetMantraId]: 0
     }))
+    
+    // For a full reset, we would remove all sessions for this mantra
+    // But we're only resetting today's count for safety
+    // If you want to implement a full reset, we can add that as a separate feature
+    
+    setShowResetDialog(false)
+    setResetMantraId(null)
+  }
+
+  const handleResetCancel = () => {
+    setShowResetDialog(false)
+    setResetMantraId(null)
+  }
+
+  // Function to reset all progress for a mantra (with confirmation)
+  const handleFullReset = () => {
+    if (!resetMantraId) return
+    
+    // Get all sessions and filter out those for this mantra
+    const allSessions = getSessions()
+    const filteredSessions = allSessions.filter(session => session.mantraId !== resetMantraId)
+    saveSessions(filteredSessions)
+    
+    // Reset today's count
+    setSessions(prev => ({
+      ...prev,
+      [resetMantraId]: 0
+    }))
+    
+    // Notify parent to refresh data
+    setTimeout(() => {
+      onUpdate(mantras)
+    }, 100)
+    
+    setShowResetDialog(false)
+    setResetMantraId(null)
   }
 
   if (mantras.length === 0) {
@@ -77,58 +133,85 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
   }
 
   return (
-    <Card className="border-0 shadow-xl">
-      <CardHeader>
-        <CardTitle className="text-xl">Your Mantras</CardTitle>
-        <CardDescription>
-          Track your progress and continue your practice
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {mantras.map(mantra => {
-          const todayCount = sessions[mantra.id] || 0
-          const totalCount = getTotalSessions(mantra.id)
-          const progress = mantra.goal > 0 ? Math.min(100, (todayCount / mantra.goal) * 100) : 0
-          
-          return (
-            <div key={mantra.id} className="border rounded-lg p-4">
-              <div className="flex justify-between items-start mb-3">
-                <div>
-                  <h3 className="font-semibold text-lg">{mantra.title}</h3>
-                  <p className="text-muted-foreground text-sm">{mantra.text}</p>
+    <>
+      <Card className="border-0 shadow-xl">
+        <CardHeader>
+          <CardTitle className="text-xl">Your Mantras</CardTitle>
+          <CardDescription>
+            Track your progress and continue your practice
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {mantras.map(mantra => {
+            const todayCount = sessions[mantra.id] || 0
+            const totalCount = getTotalSessions(mantra.id)
+            const progress = mantra.goal > 0 ? Math.min(100, (todayCount / mantra.goal) * 100) : 0
+            
+            return (
+              <div key={mantra.id} className="border rounded-lg p-4">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h3 className="font-semibold text-lg">{mantra.title}</h3>
+                    <p className="text-muted-foreground text-sm">{mantra.text}</p>
+                  </div>
+                  <Badge variant="secondary">{mantra.category}</Badge>
                 </div>
-                <Badge variant="secondary">{mantra.category}</Badge>
-              </div>
-              
-              <div className="mb-4">
-                <div className="flex justify-between text-sm mb-1">
-                  <span>Today: {todayCount} / {mantra.goal}</span>
-                  <span>Total: {totalCount}</span>
+                
+                <div className="mb-4">
+                  <div className="flex justify-between text-sm mb-1">
+                    <span>Today: {todayCount} / {mantra.goal}</span>
+                    <span>Total: {totalCount}</span>
+                  </div>
+                  <Progress value={progress} className="h-2" />
                 </div>
-                <Progress value={progress} className="h-2" />
+                
+                <div className="flex gap-2">
+                  <Button 
+                    size="sm" 
+                    onClick={() => handleAddRepetition(mantra.id)}
+                    className="flex-1"
+                  >
+                    <Play className="w-4 h-4 mr-2" />
+                    Add Repetition
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    variant="outline"
+                    onClick={() => handleResetClick(mantra.id)}
+                  >
+                    <RotateCcw className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
-              
-              <div className="flex gap-2">
-                <Button 
-                  size="sm" 
-                  onClick={() => handleAddRepetition(mantra.id)}
-                  className="flex-1"
-                >
-                  <Play className="w-4 h-4 mr-2" />
-                  Add Repetition
-                </Button>
-                <Button 
-                  size="sm" 
-                  variant="outline"
-                  onClick={() => handleResetRepetitions(mantra.id)}
-                >
-                  <RotateCcw className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          )
-        })}
-      </CardContent>
-    </Card>
+            )
+          })}
+        </CardContent>
+      </Card>
+
+      {/* Reset Confirmation Dialog */}
+      <AlertDialog open={showResetDialog} onOpenChange={setShowResetDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-yellow-500" />
+              Confirm Reset
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              This will reset your progress for this mantra. 
+              <span className="font-semibold"> This action cannot be undone.</span>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleResetCancel}>Cancel</AlertDialogCancel>
+            <Button variant="outline" onClick={handleResetConfirm}>
+              Reset Today Only
+            </Button>
+            <Button variant="destructive" onClick={handleFullReset}>
+              Reset All Progress
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   )
 }
