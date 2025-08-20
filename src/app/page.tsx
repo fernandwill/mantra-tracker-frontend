@@ -1,12 +1,27 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { CreateMantraDialog } from '@/components/create-mantra-dialog'
 import { Plus, Download, Upload, Cloud, Sparkles, Target, Clock, TrendingUp } from 'lucide-react'
+import { getMantras, addMantra } from '@/lib/mantra-service'
+import { Mantra } from '@/lib/types'
 
 export default function Home() {
+  const [mantras, setMantras] = useState<Mantra[]>([])
+
+  useEffect(() => {
+    setMantras(getMantras())
+  }, [])
+
+  const handleCreateMantra = (mantraData: Omit<Mantra, 'id' | 'createdAt' | 'updatedAt'>) => {
+    const newMantra = addMantra(mantraData)
+    setMantras([...mantras, newMantra])
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <main className="container mx-auto px-4 py-8 md:py-12">
@@ -38,8 +53,12 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">0</div>
-              <p className="text-sm text-muted-foreground mt-1">Start your journey</p>
+              <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{mantras.length}</div>
+              <p className="text-sm text-muted-foreground mt-1">
+                {mantras.length === 0 ? 'Start your journey' : 
+                 mantras.length === 1 ? '1 active mantra' : 
+                 `${mantras.length} active mantras`}
+              </p>
             </CardContent>
           </Card>
 
@@ -78,14 +97,7 @@ export default function Home() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Button 
-                size="lg" 
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
-                onClick={() => console.log('Add Mantra')}
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Mantra
-              </Button>
+              <CreateMantraDialog onCreate={handleCreateMantra} />
               
               <Button 
                 size="lg" 
