@@ -1,13 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { CreateMantraDialog } from '@/components/create-mantra-dialog'
 import { MantraList } from '@/components/mantra-list'
-import { Plus, Download, Upload, Cloud, Sparkles, Target, Clock, TrendingUp } from 'lucide-react'
+import { Plus, Download, Upload, Cloud, Sparkles, Target, Clock, TrendingUp, BarChart3 } from 'lucide-react'
 import { getMantras, addMantra, getCurrentStreak, getTotalSessions } from '@/lib/mantra-service'
 import { Mantra } from '@/lib/types'
 
@@ -125,8 +126,19 @@ export default function Home() {
             <CardDescription>Begin your practice or manage your mantras</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
               <CreateMantraDialog onCreate={handleCreateMantra} />
+              
+              <Link href="/dashboard">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="w-full border-2 hover:bg-muted/50"
+                >
+                  <BarChart3 className="w-4 h-4 mr-2" />
+                  View Analytics
+                </Button>
+              </Link>
               
               <Button 
                 size="lg" 
