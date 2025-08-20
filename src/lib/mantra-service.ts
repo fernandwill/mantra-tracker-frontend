@@ -108,6 +108,41 @@ export function getTotalSessions(mantraId: string): number {
     .reduce((total, session) => total + session.count, 0)
 }
 
+export function getCurrentStreak(): number {
+  const sessions = getSessions()
+  if (sessions.length === 0) return 0
+  
+  // Sort sessions by date descending
+  const sortedSessions = [...sessions].sort((a, b) => 
+    new Date(b.date).getTime() - new Date(a.date).getTime()
+  )
+  
+  let streak = 0
+  let currentDate = new Date()
+  currentDate.setHours(0, 0, 0, 0)
+  
+  // Create a set of dates with sessions for quick lookup
+  const sessionDates = new Set<string>()
+  sortedSessions.forEach(session => {
+    const date = new Date(session.date)
+    date.setHours(0, 0, 0, 0)
+    sessionDates.add(date.toISOString().split('T')[0])
+  })
+  
+  // Count consecutive days
+  while (true) {
+    const dateStr = currentDate.toISOString().split('T')[0]
+    if (sessionDates.has(dateStr)) {
+      streak++
+      currentDate.setDate(currentDate.getDate() - 1)
+    } else {
+      break
+    }
+  }
+  
+  return streak
+}
+
 // Helper functions
 function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).substr(2)

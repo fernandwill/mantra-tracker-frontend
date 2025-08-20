@@ -6,20 +6,41 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { CreateMantraDialog } from '@/components/create-mantra-dialog'
+import { MantraList } from '@/components/mantra-list'
 import { Plus, Download, Upload, Cloud, Sparkles, Target, Clock, TrendingUp } from 'lucide-react'
-import { getMantras, addMantra } from '@/lib/mantra-service'
+import { getMantras, addMantra, getCurrentStreak, getTotalSessions } from '@/lib/mantra-service'
 import { Mantra } from '@/lib/types'
 
 export default function Home() {
   const [mantras, setMantras] = useState<Mantra[]>([])
+  const [streak, setStreak] = useState(0)
+  const [totalSessions, setTotalSessions] = useState(0)
 
   useEffect(() => {
-    setMantras(getMantras())
+    refreshData()
   }, [])
+
+  const refreshData = () => {
+    const updatedMantras = getMantras()
+    setMantras(updatedMantras)
+    setStreak(getCurrentStreak())
+    
+    // Calculate total sessions across all mantras
+    const total = updatedMantras.reduce((sum, mantra) => {
+      return sum + getTotalSessions(mantra.id)
+    }, 0)
+    setTotalSessions(total)
+  }
 
   const handleCreateMantra = (mantraData: Omit<Mantra, 'id' | 'createdAt' | 'updatedAt'>) => {
     const newMantra = addMantra(mantraData)
     setMantras([...mantras, newMantra])
+    refreshData()
+  }
+
+  const handleUpdateMantras = (updatedMantras: Mantra[]) => {
+    setMantras(updatedMantras)
+    refreshData()
   }
 
   return (
@@ -70,8 +91,12 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">0</div>
-              <p className="text-sm text-muted-foreground mt-1">Begin today</p>
+              <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">{totalSessions}</div>
+              <p className="text-sm text-muted-foreground mt-1">
+                {totalSessions === 0 ? 'Begin today' : 
+                 totalSessions === 1 ? '1 session' : 
+                 `${totalSessions} sessions`}
+              </p>
             </CardContent>
           </Card>
 
@@ -83,8 +108,12 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">0</div>
-              <p className="text-sm text-muted-foreground mt-1">Days in a row</p>
+              <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">{streak}</div>
+              <p className="text-sm text-muted-foreground mt-1">
+                {streak === 0 ? 'Days in a row' : 
+                 streak === 1 ? '1 day streak' : 
+                 `${streak} days streak`}
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -132,8 +161,11 @@ export default function Home() {
           </CardContent>
         </Card>
 
+        {/* Mantra List */}
+        <MantraList mantras={mantras} onUpdate={handleUpdateMantras} />
+
         {/* Getting Started */}
-        <Card className="border-0 shadow-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700">
+        <Card className="border-0 shadow-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 mt-8">
           <CardHeader>
             <CardTitle className="text-xl flex items-center">
               <Sparkles className="w-5 h-5 mr-2 text-indigo-500" />
