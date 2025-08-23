@@ -10,7 +10,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { useAuth } from '@/lib/auth-context'
-import { Sparkles, Github, ArrowLeft, Eye, EyeOff, User } from 'lucide-react'
+import { mockAuthService } from '@/lib/mock-auth'
+import { Sparkles, Github, Eye, EyeOff, User } from 'lucide-react'
 import { toast } from 'sonner'
 
 export default function SignUpPage() {
@@ -24,7 +25,7 @@ export default function SignUpPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
-  const { user, isLoading: authLoading } = useAuth()
+  const { user, isLoading: authLoading, signIn: authSignIn } = useAuth()
 
   // Redirect to home if already authenticated
   useEffect(() => {
@@ -76,30 +77,22 @@ export default function SignUpPage() {
     setIsLoading(true)
 
     try {
-      const result = await fetch('http://localhost:3001/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password
-        }),
-      })
-
-      if (result.ok) {
-        const data = await result.json()
-        localStorage.setItem('auth_token', data.token)
-        localStorage.setItem('user', JSON.stringify(data.user))
-        toast.success('Account created successfully!')
-        router.push('/')
-      } else {
-        const error = await result.json()
-        toast.error(error.error || 'Sign up failed')
+      // Use mock authentication service (will be replaced with real API)
+      const result = await mockAuthService.register(
+        formData.name,
+        formData.email,
+        formData.password
+      )
+      
+      if (result) {
+        authSignIn(result.user, result.token)
+        toast.success(`Welcome to Mantra Tracker, ${result.user.name}!`)
+        // Small delay to ensure auth state updates before navigation
+        setTimeout(() => router.push('/'), 100)
       }
-    } catch {
-      toast.error('Something went wrong')
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Sign up failed'
+      toast.error(errorMessage)
     } finally {
       setIsLoading(false)
     }

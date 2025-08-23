@@ -10,7 +10,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { useAuth } from '@/lib/auth-context'
-import { Sparkles, Github, Mail, ArrowLeft, Eye, EyeOff } from 'lucide-react'
+import { mockAuthService } from '@/lib/mock-auth'
+import { Sparkles, Github, Mail, Eye, EyeOff } from 'lucide-react'
 import { toast } from 'sonner'
 
 export default function SignInPage() {
@@ -19,7 +20,7 @@ export default function SignInPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
-  const { user, isLoading: authLoading } = useAuth()
+  const { user, isLoading: authLoading, signIn: authSignIn } = useAuth()
 
   // Redirect to home if already authenticated
   useEffect(() => {
@@ -53,25 +54,19 @@ export default function SignInPage() {
     setIsLoading(true)
 
     try {
-      const result = await fetch('http://localhost:3001/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      })
-
-      if (result.ok) {
-        const data = await result.json()
-        localStorage.setItem('auth_token', data.token)
-        localStorage.setItem('user', JSON.stringify(data.user))
-        toast.success('Welcome back!')
-        router.push('/')
+      // Use mock authentication service (will be replaced with real API)
+      const result = await mockAuthService.login(email, password)
+      
+      if (result) {
+        authSignIn(result.user, result.token)
+        toast.success(`Welcome back, ${result.user.name}!`)
+        // Small delay to ensure auth state updates before navigation
+        setTimeout(() => router.push('/'), 100)
       } else {
-        const error = await result.json()
-        toast.error(error.error || 'Sign in failed')
+        toast.error('Invalid email or password')
       }
-    } catch {
+    } catch (error) {
+      console.error('Sign in error:', error)
       toast.error('Something went wrong')
     } finally {
       setIsLoading(false)

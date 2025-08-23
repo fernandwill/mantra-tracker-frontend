@@ -25,8 +25,14 @@ export default function Home() {
   // Redirect to login if not authenticated
   useEffect(() => {
     if (!isLoading && !user) {
-      router.push('/auth/signin')
-      return
+      // Small delay to prevent race condition with auth context updates
+      const timeout = setTimeout(() => {
+        if (!user) {
+          router.push('/auth/signin')
+        }
+      }, 50)
+      
+      return () => clearTimeout(timeout)
     }
   }, [user, isLoading, router])
 

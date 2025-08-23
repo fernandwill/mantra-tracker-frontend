@@ -15,6 +15,7 @@ interface AuthContextType {
   token: string | null
   isLoading: boolean
   signOut: () => void
+  signIn: (user: User, token: string) => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -53,11 +54,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setToken(null)
   }
 
+  const signIn = (newUser: User, newToken: string) => {
+    localStorage.setItem('auth_token', newToken)
+    localStorage.setItem('user', JSON.stringify(newUser))
+    setUser(newUser)
+    setToken(newToken)
+  }
+
   const value = {
     user,
     token,
     isLoading: isLoading || status === 'loading',
-    signOut
+    signOut,
+    signIn
   }
 
   return (
