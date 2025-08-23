@@ -36,6 +36,18 @@ export default function Home() {
     }
   }, [user, isLoading, router])
 
+  const refreshData = () => {
+    const updatedMantras = getMantras()
+    setMantras(updatedMantras)
+    setStreak(getCurrentStreak())
+    
+    // Calculate total repetitions across all mantras
+    const total = updatedMantras.reduce((sum, mantra) => {
+      return sum + getTotalSessions(mantra.id)
+    }, 0)
+    setTotalRepetitions(total)
+  }
+
   useEffect(() => {
     if (user) {
       refreshData()
@@ -59,18 +71,6 @@ export default function Home() {
   // Don't render anything if user is not authenticated (will redirect)
   if (!user) {
     return null
-  }
-
-  const refreshData = () => {
-    const updatedMantras = getMantras()
-    setMantras(updatedMantras)
-    setStreak(getCurrentStreak())
-    
-    // Calculate total repetitions across all mantras
-    const total = updatedMantras.reduce((sum, mantra) => {
-      return sum + getTotalSessions(mantra.id)
-    }, 0)
-    setTotalRepetitions(total)
   }
 
   const handleCreateMantra = (mantraData: Omit<Mantra, 'id' | 'createdAt' | 'updatedAt'>) => {
