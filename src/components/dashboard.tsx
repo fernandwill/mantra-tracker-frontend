@@ -28,10 +28,13 @@ export function Dashboard() {
   }
 
   // Prepare data for charts
-  const dailyData = stats.dailyProgress.map(item => ({
-    name: item.date.toLocaleDateString('en-US', { weekday: 'short' }),
-    value: item.count
-  }))
+  const dailyData = stats.dailyProgress.map(item => {
+    const date = new Date(item.date) // Convert string to Date
+    return {
+      name: date.toLocaleDateString('en-US', { weekday: 'short' }),
+      value: item.count
+    }
+  })
 
   return (
     <div className="space-y-6">

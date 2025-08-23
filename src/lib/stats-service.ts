@@ -2,14 +2,24 @@ import { getMantras, getSessions, getCurrentStreak } from '@/lib/mantra-service'
 import { Mantra } from '@/lib/types'
 
 export interface DailyStats {
-  date: Date
+  date: string // Always use string for consistency with API
   count: number
 }
 
+// Backend stats response structure
+export interface BackendStats {
+  totalRepetitions: number
+  totalMantras: number
+  activeDays: number
+  currentStreak: number
+  dailyActivity: DailyStats[]
+}
+
+// Frontend stats structure (for compatibility)
 export interface MantraStats {
   totalMantras: number
   activeMantras: number
-  totalSessions: number
+  totalSessions: number // Maps to totalRepetitions
   currentStreak: number
   longestStreak: number
   completedMantras: number
@@ -61,7 +71,7 @@ export function calculateMantraStats(): MantraStats {
     date.setDate(date.getDate() - i)
     const dateStr = date.toISOString().split('T')[0]
     dailyProgress.push({
-      date,
+      date: dateStr, // Use string format consistently
       count: dateMap[dateStr] || 0
     })
   }

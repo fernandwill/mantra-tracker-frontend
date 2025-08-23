@@ -1,5 +1,6 @@
 export interface Mantra {
   id: string
+  userId?: string // Optional for frontend, required for backend
   title: string
   text: string
   goal: number
@@ -9,6 +10,7 @@ export interface Mantra {
 
 export interface MantraSession {
   id: string
+  userId?: string // Optional for frontend, required for backend
   mantraId: string
   count: number
   date: Date

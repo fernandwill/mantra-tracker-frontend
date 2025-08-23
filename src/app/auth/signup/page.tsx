@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { useAuth } from '@/lib/auth-context'
-import { mockAuthService } from '@/lib/mock-auth'
+import { authApi } from '@/lib/api-service'
 import { Sparkles, Github, Eye, EyeOff, User } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -77,11 +77,11 @@ export default function SignUpPage() {
     setIsLoading(true)
 
     try {
-      // Use mock authentication service (will be replaced with real API)
-      const result = await mockAuthService.register(
-        formData.name,
+      // Use real backend API
+      const result = await authApi.register(
         formData.email,
-        formData.password
+        formData.password,
+        formData.name
       )
       
       if (result) {
