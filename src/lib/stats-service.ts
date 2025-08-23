@@ -1,13 +1,6 @@
 import { getMantras, getSessions, getCurrentStreak } from '@/lib/mantra-service'
 import { Mantra } from '@/lib/types'
 
-export interface CategoryStats {
-  category: string
-  count: number
-  totalTime: number
-  completionRate: number
-}
-
 export interface DailyStats {
   date: Date
   count: number
@@ -20,7 +13,6 @@ export interface MantraStats {
   currentStreak: number
   longestStreak: number
   completedMantras: number
-  categoryBreakdown: CategoryStats[]
   dailyProgress: DailyStats[]
   completionRate: number
 }
@@ -45,29 +37,7 @@ export function calculateMantraStats(): MantraStats {
   
   // Calculate completion rate
   const completionRate = totalMantras > 0 ? (completedMantras / totalMantras) * 100 : 0
-  
-  // Category breakdown
-  const categoryMap: Record<string, { count: number; total: number }> = {}
-  mantras.forEach(mantra => {
-    if (!categoryMap[mantra.category]) {
-      categoryMap[mantra.category] = { count: 0, total: 0 }
-    }
-    categoryMap[mantra.category].count += 1
-    
-    const mantraSessions = sessions.filter(s => s.mantraId === mantra.id)
-    const totalCount = mantraSessions.reduce((sum, s) => sum + s.count, 0)
-    if (totalCount >= mantra.goal) {
-      categoryMap[mantra.category].total += 1
-    }
-  })
-  
-  const categoryBreakdown: CategoryStats[] = Object.entries(categoryMap).map(([category, data]) => ({
-    category,
-    count: data.count,
-    totalTime: data.total,
-    completionRate: data.count > 0 ? (data.total / data.count) * 100 : 0
-  }))
-  
+
   // Daily progress (last 7 days)
   const dailyProgress: DailyStats[] = []
   const today = new Date()
@@ -106,7 +76,6 @@ export function calculateMantraStats(): MantraStats {
     currentStreak,
     longestStreak,
     completedMantras,
-    categoryBreakdown,
     dailyProgress,
     completionRate
   }

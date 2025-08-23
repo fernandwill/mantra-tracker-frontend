@@ -13,13 +13,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { Mantra } from '@/lib/types'
 import { updateMantra } from '@/lib/mantra-service'
 import { toast } from 'sonner'
@@ -31,23 +24,10 @@ interface EditMantraDialogProps {
   onMantraUpdated: () => void
 }
 
-const categories = [
-  'Healing',
-  'Abundance',
-  'Protection',
-  'Love',
-  'Peace',
-  'Wisdom',
-  'Gratitude',
-  'Strength',
-  'Other'
-]
-
 export function EditMantraDialog({ mantra, open, onOpenChange, onMantraUpdated }: EditMantraDialogProps) {
   const [formData, setFormData] = useState({
     title: '',
     text: '',
-    category: '',
     goal: 108
   })
   const [isLoading, setIsLoading] = useState(false)
@@ -58,7 +38,6 @@ export function EditMantraDialog({ mantra, open, onOpenChange, onMantraUpdated }
       setFormData({
         title: mantra.title,
         text: mantra.text,
-        category: mantra.category,
         goal: mantra.goal
       })
     }
@@ -87,7 +66,6 @@ export function EditMantraDialog({ mantra, open, onOpenChange, onMantraUpdated }
       const updatedMantra = updateMantra(mantra.id, {
         title: formData.title.trim(),
         text: formData.text.trim(),
-        category: formData.category,
         goal: formData.goal
       })
 
@@ -111,7 +89,6 @@ export function EditMantraDialog({ mantra, open, onOpenChange, onMantraUpdated }
       setFormData({
         title: mantra.title,
         text: mantra.text,
-        category: mantra.category,
         goal: mantra.goal
       })
     }
@@ -152,25 +129,6 @@ export function EditMantraDialog({ mantra, open, onOpenChange, onMantraUpdated }
               className="min-h-[100px]"
               required
             />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="edit-category">Category</Label>
-            <Select
-              value={formData.category}
-              onValueChange={(value) => handleInputChange('category', value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((category) => (
-                  <SelectItem key={category} value={category.toLowerCase()}>
-                    {category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
           </div>
 
           <div className="space-y-2">

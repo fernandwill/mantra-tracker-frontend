@@ -2,7 +2,6 @@ export interface Mantra {
   id: string
   title: string
   text: string
-  category: string
   goal: number
   createdAt: Date
   updatedAt: Date

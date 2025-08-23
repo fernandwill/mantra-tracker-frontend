@@ -16,20 +16,12 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { Slider } from '@/components/ui/slider'
 
 interface CreateMantraDialogProps {
   onCreate?: (mantra: {
     title: string
     text: string
-    category: string
     goal: number
   }) => void
 }
@@ -38,7 +30,6 @@ export function CreateMantraDialog({ onCreate }: CreateMantraDialogProps) {
   const [open, setOpen] = React.useState(false)
   const [title, setTitle] = React.useState('')
   const [text, setText] = React.useState('')
-  const [category, setCategory] = React.useState('mindfulness')
   const [goal, setGoal] = React.useState([108])
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -47,14 +38,12 @@ export function CreateMantraDialog({ onCreate }: CreateMantraDialogProps) {
       onCreate({
         title,
         text,
-        category,
         goal: goal[0],
       })
     }
     setOpen(false)
     setTitle('')
     setText('')
-    setCategory('mindfulness')
     setGoal([108])
   }
 
@@ -99,23 +88,6 @@ export function CreateMantraDialog({ onCreate }: CreateMantraDialogProps) {
                 className="min-h-[80px]"
                 required
               />
-            </div>
-            
-            <div className="grid gap-2">
-              <Label htmlFor="category">Category</Label>
-              <Select value={category} onValueChange={setCategory}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="mindfulness">Mindfulness</SelectItem>
-                  <SelectItem value="gratitude">Gratitude</SelectItem>
-                  <SelectItem value="affirmation">Affirmation</SelectItem>
-                  <SelectItem value="healing">Healing</SelectItem>
-                  <SelectItem value="spiritual">Spiritual</SelectItem>
-                  <SelectItem value="custom">Custom</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
             
             <div className="grid gap-2">

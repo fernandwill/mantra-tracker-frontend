@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import {
   AlertDialog,
@@ -225,7 +224,6 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
                     <p className="text-muted-foreground text-sm">{mantra.text}</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Badge variant="secondary">{mantra.category}</Badge>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm" className="h-8 w-8 p-0">

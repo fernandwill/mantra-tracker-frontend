@@ -33,11 +33,6 @@ export function Dashboard() {
     value: item.count
   }))
 
-  const categoryData = stats.categoryBreakdown.map(item => ({
-    name: item.category.charAt(0).toUpperCase() + item.category.slice(1),
-    value: item.count
-  }))
-
   return (
     <div className="space-y-6">
       {/* Key Metrics */}
@@ -96,7 +91,7 @@ export function Dashboard() {
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6">
         <Card className="border-0 shadow-lg">
           <CardHeader>
             <CardTitle className="text-lg flex items-center">
@@ -109,21 +104,6 @@ export function Dashboard() {
           </CardHeader>
           <CardContent>
             <SimpleBarChart data={dailyData} color="#818cf8" />
-          </CardContent>
-        </Card>
-
-        <Card className="border-0 shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center">
-              <Target className="w-5 h-5 mr-2 text-emerald-500" />
-              Category Distribution
-            </CardTitle>
-            <CardDescription>
-              How your practice is distributed across categories
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <SimpleBarChart data={categoryData} color="#34d399" />
           </CardContent>
         </Card>
       </div>
@@ -149,7 +129,7 @@ export function Dashboard() {
                     </div>
                     <div>
                       <p className="font-medium">{mantra.title}</p>
-                      <p className="text-sm text-muted-foreground">{mantra.category}</p>
+                      <p className="text-sm text-muted-foreground truncate max-w-xs">{mantra.text}</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -163,26 +143,7 @@ export function Dashboard() {
         </CardContent>
       </Card>
 
-      {/* Completion Progress */}
-      <Card className="border-0 shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-lg">Goal Progress</CardTitle>
-          <CardDescription>
-            How close you are to completing your mantra goals
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {stats.categoryBreakdown.map((category, index) => (
-            <div key={index} className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="font-medium">{category.category}</span>
-                <span>{Math.round(category.completionRate)}% completed</span>
-              </div>
-              <Progress value={category.completionRate} className="h-2" />
-            </div>
-          ))}
-        </CardContent>
-      </Card>
+
 
       {/* Achievements */}
       <Card className="border-0 shadow-lg">
