@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -18,11 +19,41 @@ export default function Home() {
   const [mantras, setMantras] = useState<Mantra[]>([])
   const [streak, setStreak] = useState(0)
   const [totalRepetitions, setTotalRepetitions] = useState(0)
-  const { user } = useAuth()
+  const { user, isLoading } = useAuth()
+  const router = useRouter()
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push('/auth/signin')
+      return
+    }
+  }, [user, isLoading, router])
 
   useEffect(() => {
-    refreshData()
-  }, [])
+    if (user) {
+      refreshData()
+    }
+  }, [user])
+
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 animate-pulse">
+            <Sparkles className="w-8 h-8 text-white" />
+          </div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Don't render anything if user is not authenticated (will redirect)
+  if (!user) {
+    return null
+  }
 
   const refreshData = () => {
     const updatedMantras = getMantras()
@@ -70,16 +101,7 @@ export default function Home() {
           </div>
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
-            {user ? (
-              <UserProfileDropdown />
-            ) : (
-              <Link href="/auth/signin">
-                <Button variant="outline" className="flex items-center gap-2">
-                  <LogIn className="w-4 h-4" />
-                  Sign In
-                </Button>
-              </Link>
-            )}
+            <UserProfileDropdown />
           </div>
         </header>
 
@@ -238,19 +260,10 @@ export default function Home() {
         <footer className="mt-12 text-center">
           <div className="flex justify-center items-center gap-4 mb-4 md:hidden">
             <ThemeToggle />
-            {user ? (
-              <UserProfileDropdown />
-            ) : (
-              <Link href="/auth/signin">
-                <Button variant="outline" size="sm" className="flex items-center gap-2">
-                  <LogIn className="w-4 h-4" />
-                  Sign In
-                </Button>
-              </Link>
-            )}
+            <UserProfileDropdown />
           </div>
           <p className="text-sm text-muted-foreground">
-            Your data is {user ? 'synced to your account' : 'saved locally and remains private'}. {!user && 'Sign in to sync across devices.'}
+            Your data is synced to your account. Continue your mindfulness practice.
           </p>
         </footer>
       </main>
