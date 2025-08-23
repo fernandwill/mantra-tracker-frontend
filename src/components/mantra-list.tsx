@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Mantra } from '@/lib/types'
 import { addSession, getTodaysSessions, getTotalSessions, saveSessions, getSessions, deleteMantra } from '@/lib/mantra-service'
-import { Play, RotateCcw, Target, AlertTriangle, Edit, Trash2, MoreVertical } from 'lucide-react'
+import { Play, RotateCcw, Target, AlertTriangle, Edit, Trash2, MoreVertical, Check } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -250,10 +250,18 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
                 
                 <div className="mb-4">
                   <div className="flex justify-between text-sm mb-1">
-                    <span>Today: {todayCount} / {mantra.goal}</span>
+                    <span className="flex items-center gap-1">
+                      Today: {todayCount} / {mantra.goal}
+                      {todayCount >= mantra.goal && (
+                        <Check className="w-4 h-4 text-green-600 dark:text-green-400" />
+                      )}
+                    </span>
                     <span>Total: {totalCount}</span>
                   </div>
-                  <Progress value={progress} className="h-2" />
+                  <Progress 
+                    value={progress} 
+                    className={`h-2 ${todayCount >= mantra.goal ? '[&>div]:bg-green-500' : ''}`} 
+                  />
                 </div>
                 
                 <div className="flex gap-2">
