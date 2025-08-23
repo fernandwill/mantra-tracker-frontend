@@ -5,9 +5,7 @@ import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
-interface AlertDialogProps extends React.ComponentProps<typeof AlertDialogPrimitive.Root> {}
-
-function AlertDialog({ ...props }: AlertDialogProps) {
+function AlertDialog({ ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
   return <AlertDialogPrimitive.Root {...props} />
 }
 

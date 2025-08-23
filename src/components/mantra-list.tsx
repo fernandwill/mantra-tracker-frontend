@@ -7,7 +7,6 @@ import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -117,7 +116,7 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
         <CardHeader>
           <CardTitle className="text-xl">Your Mantras</CardTitle>
           <CardDescription>
-            You haven't created any mantras yet. Start by adding your first mantra.
+            You haven&apos;t created any mantras yet. Start by adding your first mantra.
           </CardDescription>
         </CardHeader>
         <CardContent className="text-center py-12">

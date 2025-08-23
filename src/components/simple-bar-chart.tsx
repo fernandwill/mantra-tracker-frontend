@@ -1,7 +1,5 @@
 'use client'
 
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts'
-
 interface SimpleBarChartProps {
   data: { name: string; value: number }[]
   color?: string

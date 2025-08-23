@@ -118,7 +118,7 @@ export function getCurrentStreak(): number {
   )
   
   let streak = 0
-  let currentDate = new Date()
+  const currentDate = new Date()
   currentDate.setHours(0, 0, 0, 0)
   
   // Create a set of dates with sessions for quick lookup
@@ -148,7 +148,7 @@ function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).substr(2)
 }
 
-function dateReviver(key: string, value: any): any {
+function dateReviver(key: string, value: unknown): unknown {
   const dateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/
   if (typeof value === 'string' && dateRegex.test(value)) {
     return new Date(value)

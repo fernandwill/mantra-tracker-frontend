@@ -1,5 +1,5 @@
 import { getMantras, getSessions, getCurrentStreak } from '@/lib/mantra-service'
-import { Mantra, MantraSession } from '@/lib/types'
+import { Mantra } from '@/lib/types'
 
 export interface CategoryStats {
   category: string

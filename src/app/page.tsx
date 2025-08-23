@@ -8,7 +8,9 @@ import { Badge } from '@/components/ui/badge'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { CreateMantraDialog } from '@/components/create-mantra-dialog'
 import { MantraList } from '@/components/mantra-list'
-import { Plus, Download, Upload, Cloud, Sparkles, Target, Clock, TrendingUp, BarChart3 } from 'lucide-react'
+import { UserProfileDropdown } from '@/components/user-profile-dropdown'
+import { useAuth } from '@/lib/auth-context'
+import { Download, Upload, Cloud, Sparkles, Target, Clock, TrendingUp, BarChart3, LogIn } from 'lucide-react'
 import { getMantras, addMantra, getCurrentStreak, getTotalSessions } from '@/lib/mantra-service'
 import { Mantra } from '@/lib/types'
 
@@ -16,6 +18,7 @@ export default function Home() {
   const [mantras, setMantras] = useState<Mantra[]>([])
   const [streak, setStreak] = useState(0)
   const [totalSessions, setTotalSessions] = useState(0)
+  const { user } = useAuth()
 
   useEffect(() => {
     refreshData()
@@ -59,9 +62,24 @@ export default function Home() {
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
               Cultivate mindfulness and track your spiritual journey with intention and grace
             </p>
+            {user && (
+              <p className="mt-2 text-sm text-muted-foreground">
+                Welcome back, {user.name}!
+              </p>
+            )}
           </div>
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />
+            {user ? (
+              <UserProfileDropdown />
+            ) : (
+              <Link href="/auth/signin">
+                <Button variant="outline" className="flex items-center gap-2">
+                  <LogIn className="w-4 h-4" />
+                  Sign In
+                </Button>
+              </Link>
+            )}
           </div>
         </header>
 
@@ -218,11 +236,21 @@ export default function Home() {
 
         {/* Footer */}
         <footer className="mt-12 text-center">
-          <div className="flex justify-center mb-4 md:hidden">
+          <div className="flex justify-center items-center gap-4 mb-4 md:hidden">
             <ThemeToggle />
+            {user ? (
+              <UserProfileDropdown />
+            ) : (
+              <Link href="/auth/signin">
+                <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <LogIn className="w-4 h-4" />
+                  Sign In
+                </Button>
+              </Link>
+            )}
           </div>
           <p className="text-sm text-muted-foreground">
-            Your data is saved locally and remains private. Connect to cloud storage for backup.
+            Your data is {user ? 'synced to your account' : 'saved locally and remains private'}. {!user && 'Sign in to sync across devices.'}
           </p>
         </footer>
       </main>

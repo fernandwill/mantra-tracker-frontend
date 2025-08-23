@@ -3,16 +3,16 @@
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import { Badge } from '@/components/ui/badge'
 import { calculateMantraStats, getMostPracticedMantras } from '@/lib/stats-service'
 import { MantraStats } from '@/lib/stats-service'
+import { Mantra } from '@/lib/types'
 import { SimpleBarChart } from '@/components/simple-bar-chart'
 import { Achievements } from '@/components/achievements'
 import { Target, Clock, TrendingUp, CheckCircle, Calendar, Trophy } from 'lucide-react'
 
 export function Dashboard() {
   const [stats, setStats] = useState<MantraStats | null>(null)
-  const [mostPracticed, setMostPracticed] = useState<any[]>([])
+  const [mostPracticed, setMostPracticed] = useState<(Mantra & { totalCount: number })[]>([])
 
   useEffect(() => {
     refreshStats()
