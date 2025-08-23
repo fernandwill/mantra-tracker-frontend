@@ -32,7 +32,7 @@ interface MantraListProps {
 }
 
 export function MantraList({ mantras, onUpdate }: MantraListProps) {
-  const [sessions, setSessions] = useState<Record<string, number>>({})
+  const [repetitions, setRepetitions] = useState<Record<string, number>>({})
   const [resetMantraId, setResetMantraId] = useState<string | null>(null)
   const [showResetDialog, setShowResetDialog] = useState(false)
   const [editMantra, setEditMantra] = useState<Mantra | null>(null)
@@ -40,15 +40,15 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
   const [deleteMantraId, setDeleteMantraId] = useState<string | null>(null)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
-  // Initialize session counts
+  // Initialize repetition counts
   useEffect(() => {
-    const initialSessions: Record<string, number> = {}
+    const initialRepetitions: Record<string, number> = {}
     mantras.forEach(mantra => {
-      const todaySessions = getTodaysSessions(mantra.id)
-      const todayCount = todaySessions.reduce((sum, session) => sum + session.count, 0)
-      initialSessions[mantra.id] = todayCount
+      const todayRepetitions = getTodaysSessions(mantra.id)
+      const todayCount = todayRepetitions.reduce((sum, session) => sum + session.count, 0)
+      initialRepetitions[mantra.id] = todayCount
     })
-    setSessions(initialSessions)
+    setRepetitions(initialRepetitions)
   }, [mantras])
 
   const handleAddRepetition = (mantraId: string) => {
@@ -60,7 +60,7 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
     })
     
     // Update local state
-    setSessions(prev => ({
+    setRepetitions(prev => ({
       ...prev,
       [mantraId]: (prev[mantraId] || 0) + 1
     }))
@@ -80,7 +80,7 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
     if (!resetMantraId) return
     
     // Reset today's count
-    setSessions(prev => ({
+    setRepetitions(prev => ({
       ...prev,
       [resetMantraId]: 0
     }))
@@ -108,7 +108,7 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
     saveSessions(filteredSessions)
     
     // Reset today's count
-    setSessions(prev => ({
+    setRepetitions(prev => ({
       ...prev,
       [resetMantraId]: 0
     }))
@@ -155,10 +155,10 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
         saveSessions(filteredSessions)
         
         // Update local state
-        setSessions(prev => {
-          const newSessions = { ...prev }
-          delete newSessions[deleteMantraId]
-          return newSessions
+        setRepetitions(prev => {
+          const newRepetitions = { ...prev }
+          delete newRepetitions[deleteMantraId]
+          return newRepetitions
         })
         
         toast.success('Mantra deleted successfully')
@@ -212,7 +212,7 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
         </CardHeader>
         <CardContent className="space-y-6">
           {mantras.map(mantra => {
-            const todayCount = sessions[mantra.id] || 0
+            const todayCount = repetitions[mantra.id] || 0
             const totalCount = getTotalSessions(mantra.id)
             const progress = mantra.goal > 0 ? Math.min(100, (todayCount / mantra.goal) * 100) : 0
             

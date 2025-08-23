@@ -14,7 +14,7 @@ export function getAchievements(): Achievement[] {
   const sessions = getSessions()
   const streak = getCurrentStreak()
   
-  // Calculate total sessions
+  // Calculate total repetitions
   const totalSessions = sessions.reduce((sum, session) => sum + session.count, 0)
   
   // Calculate completed mantras

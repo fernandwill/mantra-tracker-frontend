@@ -25,7 +25,7 @@ export function calculateMantraStats(): MantraStats {
   const totalMantras = mantras.length
   const currentStreak = getCurrentStreak()
   
-  // Calculate total sessions
+  // Calculate total repetitions
   const totalSessions = sessions.reduce((sum, session) => sum + session.count, 0)
   
   // Calculate completed mantras (those that have reached their goal at least once)

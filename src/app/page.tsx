@@ -17,7 +17,7 @@ import { Mantra } from '@/lib/types'
 export default function Home() {
   const [mantras, setMantras] = useState<Mantra[]>([])
   const [streak, setStreak] = useState(0)
-  const [totalSessions, setTotalSessions] = useState(0)
+  const [totalRepetitions, setTotalRepetitions] = useState(0)
   const { user } = useAuth()
 
   useEffect(() => {
@@ -29,11 +29,11 @@ export default function Home() {
     setMantras(updatedMantras)
     setStreak(getCurrentStreak())
     
-    // Calculate total sessions across all mantras
+    // Calculate total repetitions across all mantras
     const total = updatedMantras.reduce((sum, mantra) => {
       return sum + getTotalSessions(mantra.id)
     }, 0)
-    setTotalSessions(total)
+    setTotalRepetitions(total)
   }
 
   const handleCreateMantra = (mantraData: Omit<Mantra, 'id' | 'createdAt' | 'updatedAt'>) => {
@@ -106,15 +106,15 @@ export default function Home() {
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
                 <Clock className="w-4 h-4 mr-2" />
-                Total Sessions
+                Total Repetitions
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">{totalSessions}</div>
+              <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">{totalRepetitions}</div>
               <p className="text-sm text-muted-foreground mt-1">
-                {totalSessions === 0 ? 'Begin today' : 
-                 totalSessions === 1 ? '1 session' : 
-                 `${totalSessions} sessions`}
+                {totalRepetitions === 0 ? 'Begin today' : 
+                 totalRepetitions === 1 ? '1 repetition' : 
+                 `${totalRepetitions} repetitions`}
               </p>
             </CardContent>
           </Card>

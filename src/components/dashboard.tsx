@@ -54,7 +54,7 @@ export function Dashboard() {
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
               <Clock className="w-4 h-4 mr-2" />
-              Total Sessions
+              Total Repetitions
             </CardTitle>
           </CardHeader>
           <CardContent>
