@@ -111,12 +111,13 @@ export default function SignInPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* Social Sign In Buttons */}
+          
+          {/* Social Sign In Buttons */}
             <div className="space-y-3">
               <Button
                 onClick={() => handleSocialSignIn('google')}
                 disabled={isLoading}
-                className="w-full bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 shadow-sm h-11"
+                className="w-full !bg-white hover:!bg-gray-50 !text-gray-900 !border-gray-300 shadow-sm h-11 dark:!bg-white dark:hover:!bg-gray-100 dark:!text-gray-900 dark:!border-gray-300"
                 variant="outline"
               >
                 <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
@@ -131,7 +132,7 @@ export default function SignInPage() {
               <Button
                 onClick={() => handleSocialSignIn('github')}
                 disabled={isLoading}
-                className="w-full bg-gray-900 hover:bg-gray-800 text-white h-11"
+                className="w-full bg-gray-900 hover:bg-gray-800 text-white h-11 dark:bg-gray-800 dark:hover:bg-gray-700"
               >
                 <Github className="w-5 h-5 mr-3" />
                 Continue with GitHub
