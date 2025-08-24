@@ -14,8 +14,8 @@ interface AuthResponse {
   token: string
 }
 
-// Configuration
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+// Configuration - Use local API routes instead of separate backend
+const API_BASE_URL = ''
 
 // Helper function to get auth headers
 function getAuthHeaders(): HeadersInit {
