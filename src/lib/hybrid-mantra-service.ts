@@ -1,6 +1,5 @@
 import { Mantra, MantraSession } from '@/lib/types'
 import { mantraApi, sessionApi } from '@/lib/api-service'
-import { BackendStats } from '@/lib/stats-service'
 
 // Configuration to switch between API and localStorage
 const USE_API = process.env.NEXT_PUBLIC_USE_API === 'true' || process.env.NODE_ENV === 'production'

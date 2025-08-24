@@ -35,7 +35,7 @@ function getUserIdFromAuth(request: NextRequest): string {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret') as JWTPayload
     return decoded.userId
-  } catch (error) {
+  } catch (_error) {
     throw new Error('Invalid token')
   }
 }
@@ -125,11 +125,11 @@ export async function GET(request: NextRequest) {
     } finally {
       client.release()
     }
-  } catch (error) {
-    console.error('Get stats error:', error)
+  } catch (_error) {
+    console.error('Get stats error:', _error)
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Internal server error' },
-      { status: error instanceof Error && error.message.includes('authenticated') ? 401 : 500 }
+      { error: _error instanceof Error ? _error.message : 'Internal server error' },
+      { status: _error instanceof Error && _error.message.includes('authenticated') ? 401 : 500 }
     )
   }
 }

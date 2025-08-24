@@ -11,7 +11,7 @@ import { CreateMantraDialog } from '@/components/create-mantra-dialog'
 import { MantraList } from '@/components/mantra-list'
 import { UserProfileDropdown } from '@/components/user-profile-dropdown'
 import { useAuth } from '@/lib/auth-context'
-import { Download, Upload, Cloud, Sparkles, Target, Clock, TrendingUp, BarChart3, LogIn } from 'lucide-react'
+import { Download, Upload, Cloud, Sparkles, Target, Clock, TrendingUp, BarChart3 } from 'lucide-react'
 import { getMantras, addMantra, getCurrentStreak, getTotalSessions } from '@/lib/mantra-service'
 import { Mantra } from '@/lib/types'
 

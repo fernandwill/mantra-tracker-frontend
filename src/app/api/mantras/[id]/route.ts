@@ -8,16 +8,7 @@ interface JWTPayload {
   email: string
 }
 
-// Type for database row
-interface MantraRow {
-  id: string
-  user_id: string
-  title: string
-  text: string
-  goal: number
-  created_at: string
-  updated_at: string
-}
+
 
 // Database connection
 const pool = new Pool({
@@ -36,7 +27,7 @@ function getUserIdFromAuth(request: NextRequest): string {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret') as JWTPayload
     return decoded.userId
-  } catch (error) {
+  } catch (_error) {
     throw new Error('Invalid token')
   }
 }
@@ -44,11 +35,11 @@ function getUserIdFromAuth(request: NextRequest): string {
 // PUT /api/mantras/[id] - Update a mantra
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const userId = getUserIdFromAuth(request)
-    const { id } = params
+    const { id } = await params
     const updates = await request.json()
 
     const client = await pool.connect()
@@ -113,11 +104,11 @@ export async function PUT(
     } finally {
       client.release()
     }
-  } catch (error) {
-    console.error('Update mantra error:', error)
+  } catch (_error) {
+    console.error('Update mantra error:', _error)
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Internal server error' },
-      { status: error instanceof Error && error.message.includes('authenticated') ? 401 : 500 }
+      { error: _error instanceof Error ? _error.message : 'Internal server error' },
+      { status: _error instanceof Error && _error.message.includes('authenticated') ? 401 : 500 }
     )
   }
 }
@@ -125,11 +116,11 @@ export async function PUT(
 // DELETE /api/mantras/[id] - Delete a mantra
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const userId = getUserIdFromAuth(request)
-    const { id } = params
+    const { id } = await params
 
     const client = await pool.connect()
     try {
@@ -149,11 +140,11 @@ export async function DELETE(
     } finally {
       client.release()
     }
-  } catch (error) {
-    console.error('Delete mantra error:', error)
+  } catch (_error) {
+    console.error('Delete mantra error:', _error)
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Internal server error' },
-      { status: error instanceof Error && error.message.includes('authenticated') ? 401 : 500 }
+      { error: _error instanceof Error ? _error.message : 'Internal server error' },
+      { status: _error instanceof Error && _error.message.includes('authenticated') ? 401 : 500 }
     )
   }
 }

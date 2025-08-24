@@ -3,9 +3,8 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { ThemeToggle } from '@/components/theme-toggle'
-import { Sparkles, Target, Clock, TrendingUp, BarChart3, ArrowRight, Star, Heart, Zap } from 'lucide-react'
+import { Sparkles, Target, Clock, BarChart3, ArrowRight, Star, Heart, Zap } from 'lucide-react'
 
 export function LandingPage() {
   return (
