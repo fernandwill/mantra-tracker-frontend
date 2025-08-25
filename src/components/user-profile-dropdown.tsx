@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useAuth } from '@/lib/auth-context'
-import { LogOut, BarChart3 } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 import { toast } from 'sonner'
 
 export function UserProfileDropdown() {
@@ -71,11 +71,6 @@ export function UserProfileDropdown() {
             </p>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => router.push('/dashboard')}>
-          <BarChart3 className="mr-2 h-4 w-4" />
-          <span>Dashboard</span>
-        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem 
           onClick={handleSignOut}
