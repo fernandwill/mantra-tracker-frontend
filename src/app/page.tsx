@@ -186,8 +186,9 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <main className="container mx-auto px-4 py-8 md:py-12">
-        {/* Mobile Theme Toggle - Top */}
-        <div className="flex justify-end mb-4 md:hidden">
+        {/* Mobile Theme Toggle & User Profile - Top */}
+        <div className="flex justify-between items-center mb-4 md:hidden">
+          <UserProfileDropdown />
           <ThemeToggle />
         </div>
 
@@ -382,9 +383,6 @@ export default function Home() {
 
         {/* Footer */}
         <footer className="mt-12 text-center">
-          <div className="flex justify-center items-center gap-4 mb-4 md:hidden">
-            <UserProfileDropdown />
-          </div>
           <p className="text-sm text-muted-foreground">
             Your data is synced to your account. Continue your mindfulness practice.
           </p>
