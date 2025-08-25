@@ -43,6 +43,11 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  icons: {
+    icon: "/sparkle-icon.svg",
+    shortcut: "/sparkle-icon.svg",
+    apple: "/sparkle-icon.svg",
+  },
 };
 
 export default function RootLayout({
