@@ -31,17 +31,17 @@ export async function GET() {
     try {
       const userResult = await sql`SELECT COUNT(*) as count FROM users`
       userCount = parseInt(userResult.rows[0].count)
-    } catch (_e) {}
+    } catch { }
     
     try {
       const mantraResult = await sql`SELECT COUNT(*) as count FROM mantras`
       mantraCount = parseInt(mantraResult.rows[0].count)
-    } catch (_e) {}
+    } catch { }
     
     try {
       const sessionResult = await sql`SELECT COUNT(*) as count FROM mantra_sessions`
       sessionCount = parseInt(sessionResult.rows[0].count)
-    } catch (_e) {}
+    } catch { }
     
     return NextResponse.json({
       success: true,

@@ -89,13 +89,14 @@ export default function Home() {
     refreshData()
   }
 
-  const handleExportData = () => {
+  const handleExportData = async () => {
     setIsExporting(true)
     try {
       DataExportService.downloadAsFile()
       toast.success('Data exported successfully!')
-    } catch (error) {
-      toast.error('Failed to export data')
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : String(error)
+      toast.error(`Failed to export data: ${errorMessage}`)
       console.error('Export error:', error)
     } finally {
       setIsExporting(false)
@@ -124,8 +125,9 @@ export default function Home() {
         } else {
           toast.error(`Import failed: ${result.errors.join(', ')}`)
         }
-      } catch (error) {
-        toast.error('Failed to import data')
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : String(error)
+        toast.error(`Failed to import data: ${errorMessage}`)
         console.error('Import error:', error)
       } finally {
         setIsImporting(false)
@@ -150,8 +152,9 @@ export default function Home() {
       await googleDriveService.saveDataToDrive(exportData)
       
       toast.success('Data synced to Google Drive successfully!')
-    } catch (error) {
-      toast.error('Failed to sync with Google Drive')
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : String(error)
+      toast.error(`Failed to sync with Google Drive: ${errorMessage}`)
       console.error('Cloud sync error:', error)
     } finally {
       setIsCloudSyncing(false)
@@ -177,8 +180,9 @@ export default function Home() {
       } else {
         toast.error(`Restore failed: ${result.errors.join(', ')}`)
       }
-    } catch (error) {
-      toast.error('Failed to restore from Google Drive')
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : String(error)
+      toast.error(`Failed to restore from Google Drive: ${errorMessage}`)
       console.error('Cloud restore error:', error)
     }
   }

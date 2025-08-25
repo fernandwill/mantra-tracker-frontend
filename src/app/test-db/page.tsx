@@ -24,7 +24,7 @@ export default function DatabaseTestPage() {
       const response = await fetch('/api/db-diagnostics')
       const data = await response.json()
       setTestResult(data)
-    } catch (_error) {
+    } catch {
       setTestResult({ success: false, error: 'Failed to connect to test endpoint' })
     } finally {
       setLoading(false)
@@ -37,7 +37,7 @@ export default function DatabaseTestPage() {
       const response = await fetch('/api/health')
       const data = await response.json()
       setTestResult(data)
-    } catch (_error) {
+    } catch {
       setTestResult({ success: false, error: 'Failed to connect to health endpoint' })
     } finally {
       setLoading(false)
@@ -50,7 +50,7 @@ export default function DatabaseTestPage() {
       const response = await fetch('/api/setup-db', { method: 'POST' })
       const data = await response.json()
       setTestResult(data)
-    } catch (_error) {
+    } catch {
       setTestResult({ success: false, error: 'Failed to connect to setup endpoint' })
     } finally {
       setLoading(false)
@@ -71,7 +71,7 @@ export default function DatabaseTestPage() {
       })
       const data = await response.json()
       setTestResult(data)
-    } catch (_error) {
+    } catch {
       setTestResult({ success: false, error: 'Failed to connect to register endpoint' })
     } finally {
       setLoading(false)

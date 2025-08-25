@@ -140,8 +140,10 @@ export class GoogleDriveService {
           }
 
           resolve();
-        } catch (error) {
-          reject(error);
+        } catch (error: unknown) {
+          console.error('Google API initialization failed:', error);
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          reject(new Error(`Google API initialization failed: ${errorMessage}`));
         }
       });
     });
@@ -152,7 +154,10 @@ export class GoogleDriveService {
       const script = document.createElement('script');
       script.src = 'https://apis.google.com/js/api.js';
       script.onload = () => resolve();
-      script.onerror = () => reject(new Error('Failed to load Google API'));
+      script.onerror = (event) => {
+        console.error('Failed to load Google API script:', event);
+        reject(new Error('Failed to load Google API. Please check your network connection and try again.'));
+      };
       document.head.appendChild(script);
     });
   }
@@ -171,9 +176,10 @@ export class GoogleDriveService {
       }
 
       return true;
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Authentication failed:', error);
-      throw new Error('Failed to authenticate with Google Drive');
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Failed to authenticate with Google Drive: ${errorMessage}`);
     }
   }
 
@@ -215,9 +221,10 @@ export class GoogleDriveService {
         // Create new file
         return await this.createFile(fileContent, metadata);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Failed to save to Google Drive:', error);
-      throw new Error('Failed to save data to Google Drive');
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Failed to save data to Google Drive: ${errorMessage}`);
     }
   }
 
@@ -241,9 +248,10 @@ export class GoogleDriveService {
 
       const fileContent = await this.downloadFile(latestFile.id);
       return JSON.parse(fileContent);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Failed to load from Google Drive:', error);
-      throw new Error('Failed to load data from Google Drive');
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Failed to load data from Google Drive: ${errorMessage}`);
     }
   }
 
@@ -261,9 +269,10 @@ export class GoogleDriveService {
       });
 
       return response.result.files || [];
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Failed to list backup files:', error);
-      throw new Error('Failed to list backup files');
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Failed to list backup files: ${errorMessage}`);
     }
   }
 

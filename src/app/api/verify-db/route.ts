@@ -52,7 +52,7 @@ export async function GET() {
     // Test UUID generation
     try {
       await sql`SELECT uuid_generate_v4()`
-    } catch (_uuidError) {
+    } catch {
       return NextResponse.json({
         success: false,
         error: 'UUID extension not available'
