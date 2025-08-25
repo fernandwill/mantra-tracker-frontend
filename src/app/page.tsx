@@ -187,9 +187,9 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <main className="container mx-auto px-4 py-8 md:py-12">
         {/* Mobile Theme Toggle & User Profile - Top */}
-        <div className="flex justify-between items-center mb-4 md:hidden">
-          <UserProfileDropdown />
+        <div className="flex justify-end items-center gap-3 mb-4 md:hidden">
           <ThemeToggle />
+          <UserProfileDropdown />
         </div>
 
         {/* Header Section */}
