@@ -50,6 +50,12 @@ export default function SignInPage() {
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!email || !password) {
+      toast.error('Email and password are required')
+      return
+    }
+
     setIsLoading(true)
 
     try {
@@ -62,9 +68,9 @@ export default function SignInPage() {
         // Small delay to ensure auth state updates before navigation
         setTimeout(() => router.push('/'), 100)
       }
-    } catch (error: unknown) {
+    } catch (error: any) {
       console.error('Sign in error:', error)
-      const errorMessage = error instanceof Error ? error.message : 'Something went wrong'
+      const errorMessage = error.message || 'Sign in failed. Please check your credentials.'
       toast.error(errorMessage)
     } finally {
       setIsLoading(false)
@@ -78,8 +84,9 @@ export default function SignInPage() {
         callbackUrl: '/',
         redirect: false 
       })
-    } catch {
-      toast.error('Social sign in failed')
+    } catch (error: any) {
+      console.error('Social sign in error:', error)
+      toast.error('Social sign in failed: ' + (error.message || 'Unknown error'))
     } finally {
       setIsLoading(false)
     }

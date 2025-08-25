@@ -73,6 +73,11 @@ export default function SignUpPage() {
       return
     }
 
+    if (!formData.email || !formData.name) {
+      toast.error('Email and name are required')
+      return
+    }
+
     setIsLoading(true)
 
     try {
@@ -89,8 +94,9 @@ export default function SignUpPage() {
         // Small delay to ensure auth state updates before navigation
         setTimeout(() => router.push('/'), 100)
       }
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Sign up failed'
+    } catch (error: any) {
+      console.error('Sign up error:', error)
+      const errorMessage = error.message || 'Sign up failed. Please try again.'
       toast.error(errorMessage)
     } finally {
       setIsLoading(false)
@@ -104,8 +110,9 @@ export default function SignUpPage() {
         callbackUrl: '/',
         redirect: false 
       })
-    } catch {
-      toast.error('Social sign up failed')
+    } catch (error: any) {
+      console.error('Social sign up error:', error)
+      toast.error('Social sign up failed: ' + (error.message || 'Unknown error'))
     } finally {
       setIsLoading(false)
     }

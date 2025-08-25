@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { sql } from '@vercel/postgres'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import { getMemoryStore } from '@/lib/database'
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password } = await request.json()
+    const body = await request.json()
+    const { email, password } = body
 
+    // Validate input
     if (!email || !password) {
       return NextResponse.json(
         { error: 'Email and password are required' },
@@ -14,21 +16,25 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get user from database
-    const result = await sql`
-      SELECT id, email, name, password_hash 
-      FROM users 
-      WHERE email = ${email}
-    `
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
+        { status: 400 }
+      )
+    }
 
-    if (result.rows.length === 0) {
+    // Get user from database
+    const store = getMemoryStore()
+    const user = store.users.find(u => u.email === email)
+
+    if (!user) {
       return NextResponse.json(
         { error: 'Invalid credentials' },
         { status: 401 }
       )
     }
-
-    const user = result.rows[0]
 
     // Verify password
     const isValidPassword = await bcrypt.compare(password, user.password_hash)
@@ -54,10 +60,12 @@ export async function POST(request: NextRequest) {
       },
       token
     })
-  } catch (error) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     console.error('Login error:', error)
+    
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error during login: ' + errorMessage },
       { status: 500 }
     )
   }
