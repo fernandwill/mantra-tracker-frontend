@@ -23,7 +23,13 @@ export function Dashboard() {
   }
 
   if (!stats) {
-    return <div>Loading...</div>
+    return (
+      <div className="flex justify-center items-center p-8">
+        <div className="animate-pulse">
+          <div className="rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 w-16 h-16" />
+        </div>
+      </div>
+    )
   }
 
   // Prepare data for charts

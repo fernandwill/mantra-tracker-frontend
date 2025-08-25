@@ -35,7 +35,6 @@ export default function DashboardPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 animate-pulse">
             <Sparkles className="w-8 h-8 text-white" />
           </div>
-          <p className="text-muted-foreground">Loading...</p>
         </div>
       </div>
     )
