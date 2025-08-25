@@ -131,7 +131,7 @@ export function Dashboard() {
                     </div>
                     <div>
                       <p className="font-medium">{mantra.title}</p>
-                      <p className="text-sm text-muted-foreground truncate max-w-xs">{mantra.text}</p>
+                      <p className="text-sm text-muted-foreground truncate max-w-[150px] sm:max-w-xs">{mantra.text}</p>
                     </div>
                   </div>
                   <div className="text-right">
