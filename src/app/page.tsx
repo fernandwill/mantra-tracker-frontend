@@ -92,6 +92,14 @@ export default function Home() {
   const handleExportData = async () => {
     setIsExporting(true)
     try {
+      // Check if user is on a mobile device
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        // Show instructions for mobile users
+        toast.info('Export file will open in a new tab. Please use your browser\'s save option to download it.')
+      }
+      
       DataExportService.downloadAsFile()
       toast.success('Data exported successfully!')
     } catch (error: unknown) {

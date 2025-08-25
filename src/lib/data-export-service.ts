@@ -66,16 +66,31 @@ export class DataExportService {
   static downloadAsFile(filename?: string): void {
     const data = this.exportAsJSON();
     const blob = new Blob([data], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename || this.FILENAME;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    URL.revokeObjectURL(url);
+    
+    // Check if user is on a mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+      // For mobile devices, create a data URL and open in new tab
+      const dataUrl = `data:application/json;charset=utf-8,${encodeURIComponent(data)}`;
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.target = '_blank';
+      link.download = filename || this.FILENAME;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      // For desktop, use the original approach
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename || this.FILENAME;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
   }
 
   // Import data from JSON string
