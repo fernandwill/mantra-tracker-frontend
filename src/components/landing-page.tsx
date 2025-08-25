@@ -10,6 +10,11 @@ export function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <main className="container mx-auto px-4 py-8 md:py-12">
+        {/* Mobile Theme Toggle - Top */}
+        <div className="flex justify-end mb-4 md:hidden">
+          <ThemeToggle />
+        </div>
+
         {/* Header */}
         <header className="flex justify-between items-center mb-16">
           <div className="flex items-center space-x-2">
@@ -21,7 +26,9 @@ export function LandingPage() {
             </span>
           </div>
           <div className="flex items-center gap-4">
-            <ThemeToggle />
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
             <Link href="/auth/signin">
               <Button variant="outline">Sign In</Button>
             </Link>

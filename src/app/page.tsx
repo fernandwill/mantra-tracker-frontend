@@ -87,6 +87,11 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <main className="container mx-auto px-4 py-8 md:py-12">
+        {/* Mobile Theme Toggle - Top */}
+        <div className="flex justify-end mb-4 md:hidden">
+          <ThemeToggle />
+        </div>
+
         {/* Header Section */}
         <header className="flex justify-between items-start mb-12">
           <div className="text-center flex-1">
@@ -265,7 +270,6 @@ export default function Home() {
         {/* Footer */}
         <footer className="mt-12 text-center">
           <div className="flex justify-center items-center gap-4 mb-4 md:hidden">
-            <ThemeToggle />
             <UserProfileDropdown />
           </div>
           <p className="text-sm text-muted-foreground">

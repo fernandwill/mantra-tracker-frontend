@@ -49,6 +49,11 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       <main className="container mx-auto px-4 py-8 md:py-12">
+        {/* Mobile Theme Toggle - Top */}
+        <div className="flex justify-end mb-4 md:hidden">
+          <ThemeToggle />
+        </div>
+
         {/* Header */}
         <header className="flex justify-between items-center mb-8">
           <div>
@@ -60,7 +65,9 @@ export default function DashboardPage() {
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <ThemeToggle />
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
             <Button 
               variant="outline" 
               onClick={() => router.push('/')}
