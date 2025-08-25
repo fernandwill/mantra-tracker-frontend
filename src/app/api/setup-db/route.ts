@@ -61,12 +61,13 @@ export async function POST() {
       success: true, 
       message: 'Database tables created successfully!' 
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     console.error('Database setup error:', error)
     return NextResponse.json(
       { 
         success: false, 
-        error: error.message
+        error: errorMessage
       },
       { status: 500 }
     )

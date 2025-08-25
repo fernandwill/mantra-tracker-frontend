@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server'
 import { sql } from '@vercel/postgres'
 
+interface PostgresError extends Error {
+  code?: string
+  detail?: string
+}
+
 export async function GET() {
   try {
     console.log('Starting database diagnostics...')
@@ -61,22 +66,27 @@ export async function GET() {
       usersTable: usersTable.rows,
       uuidTest: uuidTest.rows[0]
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    const errorStack = error instanceof Error ? error.stack : undefined
+    const errorCode = error instanceof Error && 'code' in error ? (error as PostgresError).code : undefined
+    const errorDetail = error instanceof Error && 'detail' in error ? (error as PostgresError).detail : undefined
+    
     console.error('Database diagnostics error:', error)
     console.error('Error details:', {
-      message: error.message,
-      stack: error.stack,
-      code: error.code,
-      detail: error.detail
+      message: errorMessage,
+      stack: errorStack,
+      code: errorCode,
+      detail: errorDetail
     })
     
     return NextResponse.json(
       { 
         success: false, 
-        error: error.message,
+        error: errorMessage,
         details: {
-          code: error.code,
-          detail: error.detail
+          code: errorCode,
+          detail: errorDetail
         }
       },
       { status: 500 }

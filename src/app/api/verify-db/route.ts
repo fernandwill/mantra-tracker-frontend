@@ -52,7 +52,7 @@ export async function GET() {
     // Test UUID generation
     try {
       await sql`SELECT uuid_generate_v4()`
-    } catch (uuidError) {
+    } catch (_uuidError) {
       return NextResponse.json({
         success: false,
         error: 'UUID extension not available'
@@ -65,11 +65,12 @@ export async function GET() {
       tables: existingTables,
       usersColumns: usersColumns.rows
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     console.error('Database verification error:', error)
     return NextResponse.json({
       success: false,
-      error: error.message
+      error: errorMessage
     }, { status: 500 })
   }
 }

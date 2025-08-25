@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server'
 import { sql } from '@vercel/postgres'
 
+interface PostgresError extends Error {
+  code?: string
+}
+
 export async function GET() {
   try {
     // Test 1: Basic connectivity
@@ -40,12 +44,15 @@ export async function GET() {
       existingTables,
       insertTestSuccess
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    const errorCode = error instanceof Error && 'code' in error ? (error as PostgresError).code : undefined
+    
     console.error('Database test error:', error)
     return NextResponse.json({
       success: false,
-      error: error.message,
-      code: error.code
+      error: errorMessage,
+      code: errorCode
     }, { status: 500 })
   }
 }

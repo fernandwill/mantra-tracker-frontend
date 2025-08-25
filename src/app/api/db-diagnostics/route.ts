@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server'
 import { sql } from '@vercel/postgres'
 
+interface PostgresError extends Error {
+  code?: string
+  detail?: string
+}
+
 export async function GET() {
   try {
     // Test 1: Database connectivity
@@ -26,17 +31,17 @@ export async function GET() {
     try {
       const userResult = await sql`SELECT COUNT(*) as count FROM users`
       userCount = parseInt(userResult.rows[0].count)
-    } catch (e) {}
+    } catch (_e) {}
     
     try {
       const mantraResult = await sql`SELECT COUNT(*) as count FROM mantras`
       mantraCount = parseInt(mantraResult.rows[0].count)
-    } catch (e) {}
+    } catch (_e) {}
     
     try {
       const sessionResult = await sql`SELECT COUNT(*) as count FROM mantra_sessions`
       sessionCount = parseInt(sessionResult.rows[0].count)
-    } catch (e) {}
+    } catch (_e) {}
     
     return NextResponse.json({
       success: true,
@@ -58,13 +63,17 @@ export async function GET() {
         }
       }
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    const errorCode = error instanceof Error && 'code' in error ? (error as PostgresError).code : undefined
+    const errorDetail = error instanceof Error && 'detail' in error ? (error as PostgresError).detail : undefined
+    
     console.error('Database diagnostics error:', error)
     return NextResponse.json({
       success: false,
-      error: error.message,
-      code: error.code,
-      detail: error.detail
+      error: errorMessage,
+      code: errorCode,
+      detail: errorDetail
     }, { status: 500 })
   }
 }

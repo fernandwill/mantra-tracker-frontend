@@ -71,25 +71,25 @@ export async function initializeDatabase() {
     // Create indexes if they don't exist
     try {
       await sql`CREATE INDEX idx_mantras_user_id ON mantras(user_id)`
-    } catch (e) {
+    } catch (_e) {
       // Index might already exist, which is fine
     }
     
     try {
       await sql`CREATE INDEX idx_sessions_user_id ON mantra_sessions(user_id)`
-    } catch (e) {
+    } catch (_e) {
       // Index might already exist, which is fine
     }
     
     try {
       await sql`CREATE INDEX idx_sessions_mantra_id ON mantra_sessions(mantra_id)`
-    } catch (e) {
+    } catch (_e) {
       // Index might already exist, which is fine
     }
     
     try {
       await sql`CREATE INDEX idx_sessions_date ON mantra_sessions(date)`
-    } catch (e) {
+    } catch (_e) {
       // Index might already exist, which is fine
     }
     

@@ -1,13 +1,19 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
+interface TestResult {
+  success: boolean
+  error?: string
+  [key: string]: unknown
+}
+
 export default function DatabaseTestPage() {
-  const [testResult, setTestResult] = useState<any>(null)
+  const [testResult, setTestResult] = useState<TestResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('test@example.com')
   const [name, setName] = useState('Test User')
@@ -18,7 +24,7 @@ export default function DatabaseTestPage() {
       const response = await fetch('/api/db-diagnostics')
       const data = await response.json()
       setTestResult(data)
-    } catch (error) {
+    } catch (_error) {
       setTestResult({ success: false, error: 'Failed to connect to test endpoint' })
     } finally {
       setLoading(false)
@@ -31,7 +37,7 @@ export default function DatabaseTestPage() {
       const response = await fetch('/api/health')
       const data = await response.json()
       setTestResult(data)
-    } catch (error) {
+    } catch (_error) {
       setTestResult({ success: false, error: 'Failed to connect to health endpoint' })
     } finally {
       setLoading(false)
@@ -44,7 +50,7 @@ export default function DatabaseTestPage() {
       const response = await fetch('/api/setup-db', { method: 'POST' })
       const data = await response.json()
       setTestResult(data)
-    } catch (error) {
+    } catch (_error) {
       setTestResult({ success: false, error: 'Failed to connect to setup endpoint' })
     } finally {
       setLoading(false)
@@ -65,7 +71,7 @@ export default function DatabaseTestPage() {
       })
       const data = await response.json()
       setTestResult(data)
-    } catch (error) {
+    } catch (_error) {
       setTestResult({ success: false, error: 'Failed to connect to register endpoint' })
     } finally {
       setLoading(false)

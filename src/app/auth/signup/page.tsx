@@ -94,9 +94,9 @@ export default function SignUpPage() {
         // Small delay to ensure auth state updates before navigation
         setTimeout(() => router.push('/'), 100)
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Sign up failed. Please try again.'
       console.error('Sign up error:', error)
-      const errorMessage = error.message || 'Sign up failed. Please try again.'
       toast.error(errorMessage)
     } finally {
       setIsLoading(false)
@@ -110,9 +110,10 @@ export default function SignUpPage() {
         callbackUrl: '/',
         redirect: false 
       })
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       console.error('Social sign up error:', error)
-      toast.error('Social sign up failed: ' + (error.message || 'Unknown error'))
+      toast.error('Social sign up failed: ' + errorMessage)
     } finally {
       setIsLoading(false)
     }

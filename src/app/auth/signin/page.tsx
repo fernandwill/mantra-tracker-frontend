@@ -68,9 +68,9 @@ export default function SignInPage() {
         // Small delay to ensure auth state updates before navigation
         setTimeout(() => router.push('/'), 100)
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Sign in failed. Please check your credentials.'
       console.error('Sign in error:', error)
-      const errorMessage = error.message || 'Sign in failed. Please check your credentials.'
       toast.error(errorMessage)
     } finally {
       setIsLoading(false)
@@ -84,9 +84,10 @@ export default function SignInPage() {
         callbackUrl: '/',
         redirect: false 
       })
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       console.error('Social sign in error:', error)
-      toast.error('Social sign in failed: ' + (error.message || 'Unknown error'))
+      toast.error('Social sign in failed: ' + errorMessage)
     } finally {
       setIsLoading(false)
     }
