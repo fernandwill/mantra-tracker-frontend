@@ -14,11 +14,17 @@ import { useAuth } from '@/lib/auth-context'
 import { Download, Upload, Cloud, Sparkles, Target, Clock, TrendingUp, BarChart3 } from 'lucide-react'
 import { getMantras, addMantra, getCurrentStreak, getTotalSessions } from '@/lib/mantra-service'
 import { Mantra } from '@/lib/types'
+import { googleDriveService } from '@/lib/google-drive-service'
+import { DataExportService } from '@/lib/data-export-service'
+import { toast } from 'sonner'
 
 export default function Home() {
   const [mantras, setMantras] = useState<Mantra[]>([])
   const [streak, setStreak] = useState(0)
   const [totalRepetitions, setTotalRepetitions] = useState(0)
+  const [isCloudSyncing, setIsCloudSyncing] = useState(false)
+  const [isExporting, setIsExporting] = useState(false)
+  const [isImporting, setIsImporting] = useState(false)
   const { user, isLoading } = useAuth()
   const router = useRouter()
 
@@ -81,6 +87,100 @@ export default function Home() {
   const handleUpdateMantras = (updatedMantras: Mantra[]) => {
     setMantras(updatedMantras)
     refreshData()
+  }
+
+  const handleExportData = () => {
+    setIsExporting(true)
+    try {
+      DataExportService.downloadAsFile()
+      toast.success('Data exported successfully!')
+    } catch (error) {
+      toast.error('Failed to export data')
+      console.error('Export error:', error)
+    } finally {
+      setIsExporting(false)
+    }
+  }
+
+  const handleImportData = () => {
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = '.json'
+    input.onchange = async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0]
+      if (!file) return
+
+      setIsImporting(true)
+      try {
+        const result = await DataExportService.importFromFile(file)
+        
+        if (result.success) {
+          toast.success(`Import successful! Imported ${result.imported.mantras} mantras and ${result.imported.sessions} sessions`)
+          refreshData() // Refresh the UI with new data
+          
+          if (result.warnings.length > 0) {
+            console.warn('Import warnings:', result.warnings)
+          }
+        } else {
+          toast.error(`Import failed: ${result.errors.join(', ')}`)
+        }
+      } catch (error) {
+        toast.error('Failed to import data')
+        console.error('Import error:', error)
+      } finally {
+        setIsImporting(false)
+      }
+    }
+    input.click()
+  }
+
+  const handleCloudSync = async () => {
+    setIsCloudSyncing(true)
+    try {
+      // Check if already authenticated
+      if (!googleDriveService.isSignedIn()) {
+        await googleDriveService.authenticate()
+        toast.success('Successfully connected to Google Drive!')
+      }
+
+      // Export current data
+      const exportData = DataExportService.exportData()
+      
+      // Save to Google Drive
+      await googleDriveService.saveDataToDrive(exportData)
+      
+      toast.success('Data synced to Google Drive successfully!')
+    } catch (error) {
+      toast.error('Failed to sync with Google Drive')
+      console.error('Cloud sync error:', error)
+    } finally {
+      setIsCloudSyncing(false)
+    }
+  }
+
+  const handleCloudRestore = async () => {
+    try {
+      // Check if authenticated
+      if (!googleDriveService.isSignedIn()) {
+        await googleDriveService.authenticate()
+      }
+
+      // Load data from Google Drive
+      const backupData = await googleDriveService.loadDataFromDrive()
+      
+      // Convert to import format and import
+      const result = DataExportService.importFromJSON(JSON.stringify(backupData), 'merge')
+      
+      if (result.success) {
+        toast.success(`Restored ${result.imported.mantras} mantras and ${result.imported.sessions} sessions from Google Drive!`)
+        refreshData()
+      } else {
+        toast.error(`Restore failed: ${result.errors.join(', ')}`)
+      }
+    } catch (error) {
+      toast.error('Failed to restore from Google Drive')
+      console.error('Cloud restore error:', error)
+    }
   }
 
   return (
@@ -176,7 +276,7 @@ export default function Home() {
             <CardDescription>Begin your practice or manage your mantras</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
               <CreateMantraDialog onCreate={handleCreateMantra} />
               
               <Link href="/dashboard">
@@ -194,30 +294,44 @@ export default function Home() {
                 size="lg" 
                 variant="outline" 
                 className="w-full border-2 hover:bg-muted/50"
-                onClick={() => console.log('Export')}
+                onClick={handleExportData}
+                disabled={isExporting}
               >
                 <Download className="w-4 h-4 mr-2" />
-                Export Data
+                {isExporting ? 'Exporting...' : 'Export Data'}
               </Button>
               
               <Button 
                 size="lg" 
                 variant="outline" 
                 className="w-full border-2 hover:bg-muted/50"
-                onClick={() => console.log('Import')}
+                onClick={handleImportData}
+                disabled={isImporting}
               >
                 <Upload className="w-4 h-4 mr-2" />
-                Import Data
+                {isImporting ? 'Importing...' : 'Import Data'}
               </Button>
               
               <Button 
                 size="lg" 
                 variant="outline" 
                 className="w-full border-2 hover:bg-muted/50"
-                onClick={() => console.log('Google Drive')}
+                onClick={handleCloudSync}
+                disabled={isCloudSyncing}
               >
                 <Cloud className="w-4 h-4 mr-2" />
-                Cloud Sync
+                {isCloudSyncing ? 'Syncing...' : 'Save to Drive'}
+              </Button>
+
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="w-full border-2 hover:bg-muted/50 text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300"
+                onClick={handleCloudRestore}
+                disabled={isCloudSyncing}
+              >
+                <Cloud className="w-4 h-4 mr-2" />
+                Restore from Drive
               </Button>
             </div>
           </CardContent>
