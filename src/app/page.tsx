@@ -11,18 +11,16 @@ import { CreateMantraDialog } from '@/components/create-mantra-dialog'
 import { MantraList } from '@/components/mantra-list'
 import { UserProfileDropdown } from '@/components/user-profile-dropdown'
 import { useAuth } from '@/lib/auth-context'
-import { Download, Upload, Cloud, Sparkles, Target, Clock, TrendingUp, BarChart3 } from 'lucide-react'
+import { Download, Upload, Sparkles, Target, Clock, TrendingUp, BarChart3 } from 'lucide-react'
 import { getMantras, addMantra, getCurrentStreak, getTotalSessions } from '@/lib/mantra-service'
 import { Mantra } from '@/lib/types'
 import { DataExportService } from '@/lib/data-export-service'
-import { supabaseStorageService } from '@/lib/supabase-storage-service'
 import { toast } from 'sonner'
 
 export default function Home() {
   const [mantras, setMantras] = useState<Mantra[]>([])
   const [streak, setStreak] = useState(0)
   const [totalRepetitions, setTotalRepetitions] = useState(0)
-  const [isCloudSyncing, setIsCloudSyncing] = useState(false)
   const [isExporting, setIsExporting] = useState(false)
   const [isImporting, setIsImporting] = useState(false)
   const { user, isLoading } = useAuth()
@@ -144,61 +142,7 @@ export default function Home() {
     input.click()
   }
 
-  // Cloud sync functionality with Supabase Storage
-  const handleCloudSync = async () => {
-    setIsCloudSyncing(true)
-    try {
-      if (!user?.id) {
-        toast.error('Please sign in to sync your data')
-        return
-      }
-
-      // Export current data
-      const exportData = DataExportService.exportData()
-      
-      // Save to Supabase cloud storage
-      const result = await supabaseStorageService.saveDataToCloud(exportData, user.id)
-      
-      if (result.success) {
-        toast.success(result.message)
-      } else {
-        toast.error(result.message)
-      }
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : String(error)
-      toast.error(`Failed to sync with cloud: ${errorMessage}`)
-      console.error('Cloud sync error:', error)
-    } finally {
-      setIsCloudSyncing(false)
-    }
-  }
-
-  // Cloud restore functionality with Supabase Storage
-  const handleCloudRestore = async () => {
-    try {
-      if (!user?.id) {
-        toast.error('Please sign in to restore your data')
-        return
-      }
-
-      // Load data from Supabase cloud storage
-      const backupData = await supabaseStorageService.loadDataFromCloud(user.id)
-      
-      // Convert to import format and import
-      const result = DataExportService.importFromJSON(JSON.stringify(backupData), 'merge')
-      
-      if (result.success) {
-        toast.success(`Restored ${result.imported.mantras} mantras and ${result.imported.sessions} sessions from cloud!`)
-        refreshData()
-      } else {
-        toast.error(`Restore failed: ${result.errors.join(', ')}`)
-      }
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : String(error)
-      toast.error(`Failed to restore from cloud: ${errorMessage}`)
-      console.error('Cloud restore error:', error)
-    }
-  }
+  // Cloud sync functionality removed
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
@@ -294,7 +238,7 @@ export default function Home() {
             <CardDescription>Begin your practice or manage your mantras</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <CreateMantraDialog onCreate={handleCreateMantra} />
               
               <Link href="/dashboard">
@@ -328,28 +272,6 @@ export default function Home() {
               >
                 <Upload className="w-4 h-4 mr-2" />
                 {isImporting ? 'Importing...' : 'Import Data'}
-              </Button>
-              
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="w-full border-2 hover:bg-muted/50"
-                onClick={handleCloudSync}
-                disabled={isCloudSyncing || !user}
-              >
-                <Cloud className="w-4 h-4 mr-2" />
-                {isCloudSyncing ? 'Syncing...' : 'Sync to Cloud'}
-              </Button>
-
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="w-full border-2 hover:bg-muted/50 text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300"
-                onClick={handleCloudRestore}
-                disabled={!user}
-              >
-                <Cloud className="w-4 h-4 mr-2" />
-                Restore from Cloud
               </Button>
             </div>
           </CardContent>
@@ -401,7 +323,7 @@ export default function Home() {
         {/* Footer */}
         <footer className="mt-12 text-center">
           <p className="text-sm text-muted-foreground">
-            Your data is synced to your account. Continue your mindfulness practice.
+            Your data is stored locally. Continue your mindfulness practice.
           </p>
         </footer>
       </main>
