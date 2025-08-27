@@ -14,7 +14,6 @@ import { useAuth } from '@/lib/auth-context'
 import { Download, Upload, Cloud, Sparkles, Target, Clock, TrendingUp, BarChart3 } from 'lucide-react'
 import { getMantras, addMantra, getCurrentStreak, getTotalSessions } from '@/lib/mantra-service'
 import { Mantra } from '@/lib/types'
-import { googleDriveService } from '@/lib/google-drive-service'
 import { DataExportService } from '@/lib/data-export-service'
 import { toast } from 'sonner'
 
@@ -22,7 +21,6 @@ export default function Home() {
   const [mantras, setMantras] = useState<Mantra[]>([])
   const [streak, setStreak] = useState(0)
   const [totalRepetitions, setTotalRepetitions] = useState(0)
-  const [isCloudSyncing, setIsCloudSyncing] = useState(false)
   const [isExporting, setIsExporting] = useState(false)
   const [isImporting, setIsImporting] = useState(false)
   const { user, isLoading } = useAuth()
@@ -144,56 +142,9 @@ export default function Home() {
     input.click()
   }
 
-  const handleCloudSync = async () => {
-    setIsCloudSyncing(true)
-    try {
-      // Check if already authenticated
-      if (!googleDriveService.isSignedIn()) {
-        await googleDriveService.authenticate()
-        toast.success('Successfully connected to Google Drive!')
-      }
+  // Cloud sync functionality will be implemented with Supabase Storage
 
-      // Export current data
-      const exportData = DataExportService.exportData()
-      
-      // Save to Google Drive
-      await googleDriveService.saveDataToDrive(exportData)
-      
-      toast.success('Data synced to Google Drive successfully!')
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : String(error)
-      toast.error(`Failed to sync with Google Drive: ${errorMessage}`)
-      console.error('Cloud sync error:', error)
-    } finally {
-      setIsCloudSyncing(false)
-    }
-  }
-
-  const handleCloudRestore = async () => {
-    try {
-      // Check if authenticated
-      if (!googleDriveService.isSignedIn()) {
-        await googleDriveService.authenticate()
-      }
-
-      // Load data from Google Drive
-      const backupData = await googleDriveService.loadDataFromDrive()
-      
-      // Convert to import format and import
-      const result = DataExportService.importFromJSON(JSON.stringify(backupData), 'merge')
-      
-      if (result.success) {
-        toast.success(`Restored ${result.imported.mantras} mantras and ${result.imported.sessions} sessions from Google Drive!`)
-        refreshData()
-      } else {
-        toast.error(`Restore failed: ${result.errors.join(', ')}`)
-      }
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : String(error)
-      toast.error(`Failed to restore from Google Drive: ${errorMessage}`)
-      console.error('Cloud restore error:', error)
-    }
-  }
+  // Cloud restore functionality will be implemented with Supabase Storage
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
@@ -329,22 +280,10 @@ export default function Home() {
                 size="lg" 
                 variant="outline" 
                 className="w-full border-2 hover:bg-muted/50"
-                onClick={handleCloudSync}
-                disabled={isCloudSyncing}
+                disabled
               >
                 <Cloud className="w-4 h-4 mr-2" />
-                {isCloudSyncing ? 'Syncing...' : 'Save to Drive'}
-              </Button>
-
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="w-full border-2 hover:bg-muted/50 text-blue-600 hover:text-blue-700 border-blue-200 hover:border-blue-300"
-                onClick={handleCloudRestore}
-                disabled={isCloudSyncing}
-              >
-                <Cloud className="w-4 h-4 mr-2" />
-                Restore from Drive
+                Cloud Sync (Coming Soon)
               </Button>
             </div>
           </CardContent>
