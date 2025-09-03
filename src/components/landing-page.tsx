@@ -96,7 +96,7 @@ export function LandingPage() {
                 <BarChart3 className="w-12 h-12 text-amber-600 dark:text-amber-400 mb-4" />
                 <CardTitle>Gain Insights</CardTitle>
                 <CardDescription>
-                  Understand your practice patterns with detailed analytics and celebrate your achievements.
+                  Understand your practice patterns with detailed statistics and celebrate your achievements.
                 </CardDescription>
               </CardHeader>
             </Card>

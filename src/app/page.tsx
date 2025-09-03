@@ -248,7 +248,7 @@ export default function Home() {
                   className="w-full border-2 hover:bg-muted/50"
                 >
                   <BarChart3 className="w-4 h-4 mr-2" />
-                  View Analytics
+                  View Statistics
                 </Button>
               </Link>
               
