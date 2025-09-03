@@ -270,13 +270,13 @@ export default function Home() {
 
         {/* Tabs */}
         <div className="mb-6">
-          <div className="flex border-b">
+          <div className="flex justify-center">
             <Button
-              variant={activeTab === 'mantras' ? 'default' : 'ghost'}
-              className={`rounded-b-none border-b-2 ${
+              variant="ghost"
+              className={`rounded-none px-4 py-2 font-medium transition-colors mx-2 ${
                 activeTab === 'mantras' 
-                  ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' 
-                  : 'border-transparent hover:border-muted-foreground'
+                  ? 'border-b-2 border-indigo-500 text-foreground' 
+                  : 'border-b-2 border-transparent text-muted-foreground hover:text-foreground hover:bg-transparent'
               }`}
               onClick={() => setActiveTab('mantras')}
             >
@@ -284,11 +284,11 @@ export default function Home() {
               Mantras
             </Button>
             <Button
-              variant={activeTab === 'statistics' ? 'default' : 'ghost'}
-              className={`rounded-b-none border-b-2 ${
+              variant="ghost"
+              className={`rounded-none px-4 py-2 font-medium transition-colors mx-2 ${
                 activeTab === 'statistics' 
-                  ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' 
-                  : 'border-transparent hover:border-muted-foreground'
+                  ? 'border-b-2 border-indigo-500 text-foreground' 
+                  : 'border-b-2 border-transparent text-muted-foreground hover:text-foreground hover:bg-transparent'
               }`}
               onClick={() => setActiveTab('statistics')}
             >
