@@ -24,10 +24,16 @@ interface CreateMantraDialogProps {
     text: string
     goal: number
   }) => void
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  id?: string
 }
 
-export function CreateMantraDialog({ onCreate }: CreateMantraDialogProps) {
-  const [open, setOpen] = React.useState(false)
+export function CreateMantraDialog({ onCreate, open, onOpenChange, id }: CreateMantraDialogProps) {
+  const [internalOpen, setInternalOpen] = React.useState(false)
+  const isOpen = open !== undefined ? open : internalOpen
+  const setIsOpen = onOpenChange !== undefined ? onOpenChange : setInternalOpen
+  
   const [title, setTitle] = React.useState('')
   const [text, setText] = React.useState('')
   const [goal, setGoal] = React.useState([108])
@@ -41,18 +47,19 @@ export function CreateMantraDialog({ onCreate }: CreateMantraDialogProps) {
         goal: goal[0],
       })
     }
-    setOpen(false)
+    setIsOpen(false)
     setTitle('')
     setText('')
     setGoal([108])
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button 
           size="lg" 
           className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+          {...(id && { id })}
         >
           <Plus className="w-4 h-4 mr-2" />
           Add Mantra

@@ -2,17 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { CreateMantraDialog } from '@/components/create-mantra-dialog'
 import { MantraList } from '@/components/mantra-list'
 import { Dashboard } from '@/components/dashboard'
 import { UserProfileDropdown } from '@/components/user-profile-dropdown'
 import { useAuth } from '@/lib/auth-context'
-import { Download, Upload, Sparkles, Target, Clock, TrendingUp, BarChart3, BookOpen, BarChart } from 'lucide-react'
+import { Download, Upload, Sparkles, Target, Clock, TrendingUp, BookOpen, BarChart } from 'lucide-react'
 import { getMantras, addMantra, getCurrentStreak, getTotalSessions } from '@/lib/mantra-service'
 import { Mantra } from '@/lib/types'
 import { DataExportService } from '@/lib/data-export-service'
@@ -97,7 +95,7 @@ export default function Home() {
       
       if (isMobile) {
         // Show instructions for mobile users
-        toast.info('Export file will open in a new tab. Please use your browser\'s save option to download it.')
+        toast.info("Export file will open in a new tab. Please use your browser's save option to download it.")
       }
       
       DataExportService.downloadAsFile()
@@ -241,7 +239,7 @@ export default function Home() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <CreateMantraDialog onCreate={handleCreateMantra} />
+              <CreateMantraDialog onCreate={handleCreateMantra} id="create-mantra-button" />
               
               <Button 
                 size="lg" 
@@ -300,7 +298,7 @@ export default function Home() {
 
         {/* Tab Content */}
         {activeTab === 'mantras' ? (
-          <MantraList mantras={mantras} onUpdate={handleUpdateMantras} />
+          <MantraList mantras={mantras} onUpdate={handleUpdateMantras} onCreate={handleCreateMantra} />
         ) : (
           <Dashboard />
         )}

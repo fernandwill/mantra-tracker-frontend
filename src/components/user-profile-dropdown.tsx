@@ -14,13 +14,16 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useAuth } from '@/lib/auth-context'
-import { LogOut } from 'lucide-react'
+import { DataExportService } from '@/lib/data-export-service'
+import { LogOut, Download, Upload } from 'lucide-react'
 import { toast } from 'sonner'
 
 export function UserProfileDropdown() {
   const { user, signOut: customSignOut } = useAuth()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  const [isExporting, setIsExporting] = useState(false)
+  const [isImporting, setIsImporting] = useState(false)
 
   if (!user) return null
 
@@ -39,6 +42,63 @@ export function UserProfileDropdown() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const handleExportData = async () => {
+    setIsExporting(true)
+    try {
+      // Check if user is on a mobile device
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      
+      if (isMobile) {
+        // Show instructions for mobile users
+        toast.info('Export file will open in a new tab. Please use your browser\'s save option to download it.')
+      }
+      
+      DataExportService.downloadAsFile()
+      toast.success('Data exported successfully!')
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : String(error)
+      toast.error(`Failed to export data: ${errorMessage}`)
+      console.error('Export error:', error)
+    } finally {
+      setIsExporting(false)
+    }
+  }
+
+  const handleImportData = () => {
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = '.json'
+    input.onchange = async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0]
+      if (!file) return
+
+      setIsImporting(true)
+      try {
+        const result = await DataExportService.importFromFile(file)
+        
+        if (result.success) {
+          toast.success(`Import successful! Imported ${result.imported.mantras} mantras and ${result.imported.sessions} sessions`)
+          
+          if (result.warnings.length > 0) {
+            console.warn('Import warnings:', result.warnings)
+          }
+          
+          // Reload the page to reflect the imported data
+          window.location.reload()
+        } else {
+          toast.error(`Import failed: ${result.errors.join(', ')}`)
+        }
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : String(error)
+        toast.error(`Failed to import data: ${errorMessage}`)
+        console.error('Import error:', error)
+      } finally {
+        setIsImporting(false)
+      }
+    }
+    input.click()
   }
 
   const getInitials = (name: string | undefined) => {
@@ -75,6 +135,15 @@ export function UserProfileDropdown() {
             </p>
           </div>
         </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={handleExportData} disabled={isExporting}>
+          <Download className="mr-2 h-4 w-4" />
+          <span>{isExporting ? 'Exporting...' : 'Export Data'}</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={handleImportData} disabled={isImporting}>
+          <Upload className="mr-2 h-4 w-4" />
+          <span>{isImporting ? 'Importing...' : 'Import Data'}</span>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem 
           onClick={handleSignOut}

@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Mantra } from '@/lib/types'
 import { addSession, getTodaysSessions, getTotalSessions, saveSessions, getSessions, deleteMantra } from '@/lib/mantra-service'
-import { Play, RotateCcw, Target, AlertTriangle, Edit, Trash2, MoreVertical, Check } from 'lucide-react'
+import { Play, RotateCcw, Target, AlertTriangle, Edit, Trash2, MoreVertical, Check, Plus } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,9 +29,10 @@ import { toast } from 'sonner'
 interface MantraListProps {
   mantras: Mantra[]
   onUpdate: (updatedMantras: Mantra[]) => void
+  onCreate: (mantraData: Omit<Mantra, 'id' | 'createdAt' | 'updatedAt'>) => void
 }
 
-export function MantraList({ mantras, onUpdate }: MantraListProps) {
+export function MantraList({ mantras, onUpdate, onCreate }: MantraListProps) {
   const [repetitions, setRepetitions] = useState<Record<string, number>>({})
   const [resetMantraId, setResetMantraId] = useState<string | null>(null)
   const [showResetDialog, setShowResetDialog] = useState(false)
@@ -204,11 +205,20 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
   return (
     <>
       <Card className="border-0 shadow-xl">
-        <CardHeader>
-          <CardTitle className="text-xl">Your Mantras</CardTitle>
-          <CardDescription>
-            Track your progress and continue your practice
-          </CardDescription>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <div>
+            <CardTitle className="text-xl">Your Mantras</CardTitle>
+            <CardDescription>
+              Track your progress and continue your practice
+            </CardDescription>
+          </div>
+          <Button 
+            onClick={() => document.getElementById('create-mantra-button')?.click()}
+            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Mantra
+          </Button>
         </CardHeader>
         <CardContent className="space-y-6">
           {mantras.map(mantra => {
@@ -307,38 +317,6 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
             </Button>
             <Button variant="destructive" onClick={handleFullReset}>
               Reset All Progress
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      {/* Edit Mantra Dialog */}
-      {editMantra && (
-        <EditMantraDialog
-          mantra={editMantra}
-          open={showEditDialog}
-          onOpenChange={setShowEditDialog}
-          onMantraUpdated={handleMantraUpdated}
-        />
-      )}
-
-      {/* Delete Confirmation Dialog */}
-      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-red-500" />
-              Delete Mantra
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to delete this mantra? This will also delete all associated progress and sessions.
-              <span className="font-semibold"> This action cannot be undone.</span>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleDeleteCancel}>Cancel</AlertDialogCancel>
-            <Button variant="destructive" onClick={handleDeleteConfirm}>
-              Delete Mantra
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
