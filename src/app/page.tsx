@@ -9,9 +9,10 @@ import { Badge } from '@/components/ui/badge'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { CreateMantraDialog } from '@/components/create-mantra-dialog'
 import { MantraList } from '@/components/mantra-list'
+import { Dashboard } from '@/components/dashboard'
 import { UserProfileDropdown } from '@/components/user-profile-dropdown'
 import { useAuth } from '@/lib/auth-context'
-import { Download, Upload, Sparkles, Target, Clock, TrendingUp, BarChart3 } from 'lucide-react'
+import { Download, Upload, Sparkles, Target, Clock, TrendingUp, BarChart3, BookOpen, BarChart } from 'lucide-react'
 import { getMantras, addMantra, getCurrentStreak, getTotalSessions } from '@/lib/mantra-service'
 import { Mantra } from '@/lib/types'
 import { DataExportService } from '@/lib/data-export-service'
@@ -23,6 +24,7 @@ export default function Home() {
   const [totalRepetitions, setTotalRepetitions] = useState(0)
   const [isExporting, setIsExporting] = useState(false)
   const [isImporting, setIsImporting] = useState(false)
+  const [activeTab, setActiveTab] = useState<'mantras' | 'statistics'>('mantras')
   const { user, isLoading } = useAuth()
   const router = useRouter()
 
@@ -238,19 +240,8 @@ export default function Home() {
             <CardDescription>Begin your practice or manage your mantras</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <CreateMantraDialog onCreate={handleCreateMantra} />
-              
-              <Link href="/dashboard">
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="w-full border-2 hover:bg-muted/50"
-                >
-                  <BarChart3 className="w-4 h-4 mr-2" />
-                  View Statistics
-                </Button>
-              </Link>
               
               <Button 
                 size="lg" 
@@ -277,48 +268,42 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* Mantra List */}
-        <MantraList mantras={mantras} onUpdate={handleUpdateMantras} />
+        {/* Tabs */}
+        <div className="mb-6">
+          <div className="flex border-b">
+            <Button
+              variant={activeTab === 'mantras' ? 'default' : 'ghost'}
+              className={`rounded-b-none border-b-2 ${
+                activeTab === 'mantras' 
+                  ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' 
+                  : 'border-transparent hover:border-muted-foreground'
+              }`}
+              onClick={() => setActiveTab('mantras')}
+            >
+              <BookOpen className="w-4 h-4 mr-2" />
+              Mantras
+            </Button>
+            <Button
+              variant={activeTab === 'statistics' ? 'default' : 'ghost'}
+              className={`rounded-b-none border-b-2 ${
+                activeTab === 'statistics' 
+                  ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' 
+                  : 'border-transparent hover:border-muted-foreground'
+              }`}
+              onClick={() => setActiveTab('statistics')}
+            >
+              <BarChart className="w-4 h-4 mr-2" />
+              Statistics
+            </Button>
+          </div>
+        </div>
 
-        {/* Getting Started */}
-        <Card className="border-0 shadow-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-700 mt-8">
-          <CardHeader>
-            <CardTitle className="text-xl flex items-center">
-              <Sparkles className="w-5 h-5 mr-2 text-indigo-500" />
-              Your Journey Begins
-            </CardTitle>
-            <CardDescription>
-              Start by creating your first mantra. Each repetition brings you closer to inner peace.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3">
-                <Badge variant="secondary" className="mt-0.5">1</Badge>
-                <div>
-                  <p className="font-medium">Create Your Mantra</p>
-                  <p className="text-sm text-muted-foreground">Add a meaningful phrase or intention to focus on</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-3">
-                <Badge variant="secondary" className="mt-0.5">2</Badge>
-                <div>
-                  <p className="font-medium">Set Your Goal</p>
-                  <p className="text-sm text-muted-foreground">Define how many repetitions you&apos;d like to achieve</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-3">
-                <Badge variant="secondary" className="mt-0.5">3</Badge>
-                <div>
-                  <p className="font-medium">Track Progress</p>
-                  <p className="text-sm text-muted-foreground">Watch your practice grow with beautiful visualizations</p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Tab Content */}
+        {activeTab === 'mantras' ? (
+          <MantraList mantras={mantras} onUpdate={handleUpdateMantras} />
+        ) : (
+          <Dashboard />
+        )}
 
         {/* Footer */}
         <footer className="mt-12 text-center">

@@ -35,7 +35,7 @@ The application now uses a clean mock authentication system ready for real user 
 
 1. **Registration**: Create new accounts with custom names
 2. **Homepage**: Mantra management, stats, quick actions
-3. **Dashboard**: Statistics, charts, achievements
+3. **Statistics Tab**: Charts, achievements, and practice insights
 4. **Create Mantras**: Add new mantras with goals
 5. **Track Progress**: Add repetitions, see visual feedback
 6. **Edit/Delete**: Manage existing mantras
@@ -48,7 +48,7 @@ The application now uses a clean mock authentication system ready for real user 
 3. Login with your new account
 4. Create your first mantra (e.g., "Om Mani Padme Hum", goal: 108)
 5. Add some repetitions and watch the progress bar fill
-6. Visit the dashboard to see statistics
+6. Visit the Statistics tab to see your practice insights
 7. Try the dark/light theme toggle
 8. Test logout and login again
 

@@ -41,7 +41,11 @@ export function UserProfileDropdown() {
     }
   }
 
-  const getInitials = (name: string) => {
+  const getInitials = (name: string | undefined) => {
+    if (!name || typeof name !== 'string') {
+      return 'U' // Default fallback for undefined/invalid names
+    }
+    
     return name
       .split(' ')
       .map(n => n[0])

@@ -80,7 +80,7 @@ The following API endpoints are available:
 /api/mantras            - GET/POST: List/Create mantras
 /api/mantras/[id]       - PUT/DELETE: Update/Delete mantra
 /api/sessions           - GET/POST: List/Create sessions
-/api/stats              - GET: Dashboard statistics
+/api/stats              - GET: Statistics data
 ```
 
 ## 🔧 Local Development

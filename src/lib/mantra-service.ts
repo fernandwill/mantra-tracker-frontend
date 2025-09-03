@@ -95,7 +95,13 @@ export function getTodaysSessions(mantraId: string): MantraSession[] {
   
   return sessions.filter(session => {
     if (session.mantraId !== mantraId) return false
+    // Handle case where session.date might be undefined or null
+    if (!session.date) return false
+    
     const sessionDate = new Date(session.date)
+    // Check if date is valid
+    if (isNaN(sessionDate.getTime())) return false
+    
     sessionDate.setHours(0, 0, 0, 0)
     return sessionDate.getTime() === today.getTime()
   })
@@ -104,7 +110,13 @@ export function getTodaysSessions(mantraId: string): MantraSession[] {
 export function getTotalSessions(mantraId: string): number {
   const sessions = getSessions()
   return sessions
-    .filter(session => session.mantraId === mantraId)
+    .filter(session => {
+      // Handle case where session.date might be undefined or null
+      if (!session.date) return false
+      // Check if date is valid
+      if (isNaN(new Date(session.date).getTime())) return false
+      return session.mantraId === mantraId
+    })
     .reduce((total, session) => total + session.count, 0)
 }
 
@@ -124,7 +136,13 @@ export function getCurrentStreak(): number {
   // Create a set of dates with sessions for quick lookup
   const sessionDates = new Set<string>()
   sortedSessions.forEach(session => {
+    // Handle case where session.date might be undefined or null
+    if (!session.date) return
+    
     const date = new Date(session.date)
+    // Check if date is valid
+    if (isNaN(date.getTime())) return
+    
     date.setHours(0, 0, 0, 0)
     sessionDates.add(date.toISOString().split('T')[0])
   })
@@ -151,7 +169,11 @@ function generateId(): string {
 function dateReviver(key: string, value: unknown): unknown {
   const dateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/
   if (typeof value === 'string' && dateRegex.test(value)) {
-    return new Date(value)
+    const date = new Date(value)
+    // Check if date is valid
+    if (!isNaN(date.getTime())) {
+      return date
+    }
   }
   return value
 }

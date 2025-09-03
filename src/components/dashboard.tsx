@@ -34,6 +34,14 @@ export function Dashboard() {
 
   // Prepare data for charts
   const dailyData = stats.dailyProgress.map(item => {
+    // Handle case where item.date might be undefined or null
+    if (!item.date) {
+      return {
+        name: 'Unknown',
+        value: item.count || 0
+      }
+    }
+    
     const date = new Date(item.date) // Convert string to Date
     return {
       name: date.toLocaleDateString('en-US', { weekday: 'short' }),

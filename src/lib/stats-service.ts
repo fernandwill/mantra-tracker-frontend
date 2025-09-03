@@ -56,7 +56,13 @@ export function calculateMantraStats(): MantraStats {
   // Create a map of dates to session counts
   const dateMap: Record<string, number> = {}
   sessions.forEach(session => {
+    // Handle case where session.date might be undefined or null
+    if (!session.date) return
+    
     const date = new Date(session.date)
+    // Check if date is valid
+    if (isNaN(date.getTime())) return
+    
     date.setHours(0, 0, 0, 0)
     const dateStr = date.toISOString().split('T')[0]
     if (!dateMap[dateStr]) {
