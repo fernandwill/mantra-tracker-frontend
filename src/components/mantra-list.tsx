@@ -15,29 +15,25 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Mantra } from '@/lib/types'
 import { addSession, getTodaysSessions, getTotalSessions, saveSessions, getSessions, deleteMantra } from '@/lib/mantra-service'
-import { Play, RotateCcw, Target, AlertTriangle, Edit, Trash2, MoreVertical, Check, Plus } from 'lucide-react'
+import { Play, RotateCcw, Target, AlertTriangle, Trash2, MoreVertical, Check, Plus } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { EditMantraDialog } from '@/components/edit-mantra-dialog'
+
 import { toast } from 'sonner'
 
 interface MantraListProps {
   mantras: Mantra[]
   onUpdate: (updatedMantras: Mantra[]) => void
-  onCreate: (mantraData: Omit<Mantra, 'id' | 'createdAt' | 'updatedAt'>) => void
 }
 
-export function MantraList({ mantras, onUpdate, onCreate }: MantraListProps) {
+export function MantraList({ mantras, onUpdate }: MantraListProps) {
   const [repetitions, setRepetitions] = useState<Record<string, number>>({})
   const [resetMantraId, setResetMantraId] = useState<string | null>(null)
   const [showResetDialog, setShowResetDialog] = useState(false)
-  const [editMantra, setEditMantra] = useState<Mantra | null>(null)
-  const [showEditDialog, setShowEditDialog] = useState(false)
   const [deleteMantraId, setDeleteMantraId] = useState<string | null>(null)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
@@ -123,18 +119,7 @@ export function MantraList({ mantras, onUpdate, onCreate }: MantraListProps) {
     setResetMantraId(null)
   }
 
-  // Edit mantra handlers
-  const handleEditClick = (mantra: Mantra) => {
-    setEditMantra(mantra)
-    setShowEditDialog(true)
-  }
 
-  const handleMantraUpdated = () => {
-    // Refresh mantras list
-    onUpdate(mantras)
-    setShowEditDialog(false)
-    setEditMantra(null)
-  }
 
   // Delete mantra handlers
   const handleDeleteClick = (mantraId: string) => {
@@ -241,11 +226,7 @@ export function MantraList({ mantras, onUpdate, onCreate }: MantraListProps) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => handleEditClick(mantra)}>
-                          <Edit className="mr-2 h-4 w-4" />
-                          Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
+
                         <DropdownMenuItem 
                           onClick={() => handleDeleteClick(mantra.id)}
                           className="text-red-600 focus:text-red-600"
@@ -317,6 +298,28 @@ export function MantraList({ mantras, onUpdate, onCreate }: MantraListProps) {
             </Button>
             <Button variant="destructive" onClick={handleFullReset}>
               Reset All Progress
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-red-500" />
+              Confirm Delete
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete this mantra and all its session data. 
+              <span className="font-semibold"> This action cannot be undone.</span>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleDeleteCancel}>Cancel</AlertDialogCancel>
+            <Button variant="destructive" onClick={handleDeleteConfirm}>
+              Delete Mantra
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

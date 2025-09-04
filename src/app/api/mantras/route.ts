@@ -36,7 +36,7 @@ function getUserIdFromAuth(request: NextRequest): string {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret') as JWTPayload
     return decoded.userId
-  } catch (_error) {
+  } catch {
     throw new Error('Invalid token')
   }
 }
