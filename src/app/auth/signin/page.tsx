@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -17,9 +18,11 @@ import { toast } from 'sonner'
 // Custom Om Logo component
 const OmLogo = ({ className }: { className?: string }) => (
   <div className={className}>
-    <img 
+    <Image 
       src="/mantra-om-logo.svg" 
       alt="Om Symbol" 
+      width={64}
+      height={64}
       className="w-full h-full"
     />
   </div>
