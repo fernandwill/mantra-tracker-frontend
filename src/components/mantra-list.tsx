@@ -36,6 +36,7 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
   const [showResetDialog, setShowResetDialog] = useState(false)
   const [deleteMantraId, setDeleteMantraId] = useState<string | null>(null)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [touchedButton, setTouchedButton] = useState<string | null>(null)
 
   // Initialize repetition counts
   useEffect(() => {
@@ -66,6 +67,14 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
     setTimeout(() => {
       onUpdate(mantras)
     }, 100)
+  }
+
+  const handleTouchStart = (mantraId: string) => {
+    setTouchedButton(mantraId)
+  }
+
+  const handleTouchEnd = () => {
+    setTimeout(() => setTouchedButton(null), 150) // Keep feedback for 150ms
   }
 
   const handleResetClick = (mantraId: string) => {
@@ -259,7 +268,13 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
                   <Button 
                     size="sm" 
                     onClick={() => handleAddRepetition(mantra.id)}
-                    className="flex-1"
+                    onTouchStart={() => handleTouchStart(mantra.id)}
+                    onTouchEnd={handleTouchEnd}
+                    className={`flex-1 transition-all duration-150 ${
+                      touchedButton === mantra.id 
+                        ? 'transform scale-95 bg-primary/90 shadow-sm' 
+                        : 'active:scale-95 active:bg-primary/90'
+                    }`}
                   >
                     <Play className="w-4 h-4 mr-2" />
                     Add Repetition
