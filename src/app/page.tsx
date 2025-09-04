@@ -231,10 +231,10 @@ export default function Home() {
           </Card>
         </div>
 
-        {/* Quick Actions */}
+        {/* Quick Access */}
         <Card className="border-0 shadow-xl mb-8">
           <CardHeader>
-            <CardTitle className="text-xl">Quick Actions</CardTitle>
+            <CardTitle className="text-xl">Quick Access</CardTitle>
             <CardDescription>Begin your practice or manage your mantras</CardDescription>
           </CardHeader>
           <CardContent>
