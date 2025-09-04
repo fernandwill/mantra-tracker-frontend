@@ -85,15 +85,35 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
   const handleResetConfirm = () => {
     if (!resetMantraId) return
     
-    // Reset today's count
+    // Get today's date for comparison
+    const today = new Date()
+    const todayDateString = today.toDateString()
+    
+    // Get all sessions and filter out today's sessions for this mantra
+    const allSessions = getSessions()
+    const filteredSessions = allSessions.filter(session => {
+      const sessionDate = new Date(session.date)
+      const sessionDateString = sessionDate.toDateString()
+      
+      // Keep the session if it's either:
+      // 1. Not for this mantra, OR
+      // 2. For this mantra but not from today
+      return session.mantraId !== resetMantraId || sessionDateString !== todayDateString
+    })
+    
+    // Save the filtered sessions back to storage
+    saveSessions(filteredSessions)
+    
+    // Reset today's count in local state
     setRepetitions(prev => ({
       ...prev,
       [resetMantraId]: 0
     }))
     
-    // For a full reset, we would remove all sessions for this mantra
-    // But we're only resetting today's count for safety
-    // If you want to implement a full reset, we can add that as a separate feature
+    // Notify parent to refresh data
+    setTimeout(() => {
+      onUpdate(mantras)
+    }, 100)
     
     setShowResetDialog(false)
     setResetMantraId(null)
