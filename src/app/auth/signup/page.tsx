@@ -11,8 +11,19 @@ import { Label } from '@/components/ui/label'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { useAuth } from '@/lib/auth-context'
 import { mockAuthService } from '@/lib/mock-auth'
-import { Sparkles, Github, Eye, EyeOff, User } from 'lucide-react'
+import { Github, Eye, EyeOff, User } from 'lucide-react'
 import { toast } from 'sonner'
+
+// Custom Om Logo component
+const OmLogo = ({ className }: { className?: string }) => (
+  <div className={className}>
+    <img 
+      src="/mantra-om-logo.svg" 
+      alt="Om Symbol" 
+      className="w-full h-full"
+    />
+  </div>
+);
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -40,9 +51,7 @@ export default function SignUpPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 animate-pulse">
-            <Sparkles className="w-8 h-8 text-white" />
-          </div>
+          <OmLogo className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 animate-pulse p-2" />
         </div>
       </div>
     )
@@ -133,9 +142,7 @@ export default function SignUpPage() {
       <div className="w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 mb-4">
-            <Sparkles className="w-8 h-8 text-white" />
-          </div>
+          <OmLogo className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 p-2" />
           <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
             Join Mantra Tracker
           </h1>

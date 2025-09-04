@@ -19,7 +19,6 @@ import { useAuth } from "@/lib/auth-context";
 import {
   Download,
   Upload,
-  Sparkles,
   Target,
   Clock,
   TrendingUp,
@@ -35,6 +34,17 @@ import {
 import { Mantra } from "@/lib/types";
 import { DataExportService } from "@/lib/data-export-service";
 import { toast } from "sonner";
+
+// Custom Om Logo component
+const OmLogo = ({ className }: { className?: string }) => (
+  <div className={className}>
+    <img 
+      src="/mantra-om-logo.svg" 
+      alt="Om Symbol" 
+      className="w-full h-full"
+    />
+  </div>
+);
 
 export default function Home() {
   const [mantras, setMantras] = useState<Mantra[]>([]);
@@ -107,9 +117,7 @@ export default function Home() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 animate-pulse">
-            <Sparkles className="w-8 h-8 text-white" />
-          </div>
+          <OmLogo className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 animate-pulse p-2" />
         </div>
       </div>
     );
@@ -211,9 +219,7 @@ export default function Home() {
         {/* Header Section */}
         <header className="flex justify-between items-start mb-12">
           <div className="text-center flex-1">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 mb-4">
-              <Sparkles className="w-8 h-8 text-white" />
-            </div>
+            <OmLogo className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 p-2" />
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               Mantra Tracker
             </h1>

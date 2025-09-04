@@ -44,9 +44,9 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/sparkle-icon.svg",
-    shortcut: "/sparkle-icon.svg",
-    apple: "/sparkle-icon.svg",
+    icon: "/mantra-om-logo.svg",
+    shortcut: "/mantra-om-logo.svg",
+    apple: "/mantra-om-logo.svg",
   },
 };
 
