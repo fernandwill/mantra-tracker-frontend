@@ -45,7 +45,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<"mantras" | "statistics">(
     "mantras"
   );
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, isNewUser } = useAuth();
   const router = useRouter();
 
   // Redirect to login if not authenticated
@@ -77,8 +77,30 @@ export default function Home() {
   useEffect(() => {
     if (user) {
       refreshData();
+      
+      // Show welcome toast only once per session, different message for new vs returning users
+      const sessionKey = `welcomed_${user.id}_${new Date().toDateString()}`; // Reset daily
+      const hasShownWelcome = sessionStorage.getItem(sessionKey);
+      
+      if (!hasShownWelcome) {
+        // Small delay to ensure the page has loaded
+        setTimeout(() => {
+          if (isNewUser) {
+            toast.success(`Welcome, ${user.name}! 🙏`, {
+              description: "Begin your mindfulness journey",
+              duration: 4000,
+            });
+          } else {
+            toast.success(`Welcome back, ${user.name}! 🙏`, {
+              description: "Continue your mindfulness journey",
+              duration: 4000,
+            });
+          }
+          sessionStorage.setItem(sessionKey, "true");
+        }, 500);
+      }
     }
-  }, [user]);
+  }, [user, isNewUser]);
 
   // Show loading state while checking authentication
   if (isLoading) {
@@ -199,11 +221,6 @@ export default function Home() {
               Cultivate mindfulness and track your spiritual journey with
               intention and grace
             </p>
-            {user && (
-              <p className="mt-2 text-sm text-muted-foreground">
-                Welcome back, {user.name}!
-              </p>
-            )}
           </div>
           <div className="hidden md:flex items-center gap-4">
             <ThemeToggle />

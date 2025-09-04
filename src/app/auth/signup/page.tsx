@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { useAuth } from '@/lib/auth-context'
-import { authApi } from '@/lib/api-service'
+import { mockAuthService } from '@/lib/mock-auth'
 import { Sparkles, Github, Eye, EyeOff, User } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -81,23 +81,32 @@ export default function SignUpPage() {
     setIsLoading(true)
 
     try {
-      // Use real backend API
-      const result = await authApi.register(
+      // Use mock authentication service
+      const result = await mockAuthService.register(
+        formData.name,
         formData.email,
-        formData.password,
-        formData.name
+        formData.password
       )
       
       if (result) {
-        authSignIn(result.user, result.token)
+        authSignIn(result.user, result.token, true) // true indicates this is a new user
         toast.success(`Welcome to Mantra Tracker, ${result.user.name}!`)
         // Small delay to ensure auth state updates before navigation
         setTimeout(() => router.push('/'), 100)
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Sign up failed. Please try again.'
       console.error('Sign up error:', error)
-      toast.error(errorMessage)
+      
+      // Handle specific error messages
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      
+      if (errorMessage.toLowerCase().includes('user already exists')) {
+        toast.error('❌ Account already exists. Please try signing in instead.')
+      } else if (errorMessage.toLowerCase().includes('password must be')) {
+        toast.error('🔒 Password must be at least 6 characters long.')
+      } else {
+        toast.error(`⚠️ Sign up failed: ${errorMessage}`)
+      }
     } finally {
       setIsLoading(false)
     }

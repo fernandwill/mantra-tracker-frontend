@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { useAuth } from '@/lib/auth-context'
-import { authApi } from '@/lib/api-service'
+import { mockAuthService } from '@/lib/mock-auth'
 import { Sparkles, Github, Mail, Eye, EyeOff } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -59,19 +59,30 @@ export default function SignInPage() {
     setIsLoading(true)
 
     try {
-      // Use real backend API
-      const result = await authApi.login(email, password)
+      // Use mock authentication service
+      const result = await mockAuthService.login(email, password)
       
       if (result) {
-        authSignIn(result.user, result.token)
+        authSignIn(result.user, result.token, false) // false indicates this is an existing user
         toast.success(`Welcome back, ${result.user.name}!`)
         // Small delay to ensure auth state updates before navigation
         setTimeout(() => router.push('/'), 100)
+      } else {
+        toast.error('❌ Invalid email or password. Please check your credentials and try again.')
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Sign in failed. Please check your credentials.'
       console.error('Sign in error:', error)
-      toast.error(errorMessage)
+      
+      // Handle specific error messages
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      
+      if (errorMessage.toLowerCase().includes('user already exists')) {
+        toast.error('❌ User already exists. Please try signing in instead.')
+      } else if (errorMessage.toLowerCase().includes('password must be')) {
+        toast.error('🔒 Password requirements not met. Please check the requirements.')
+      } else {
+        toast.error(`⚠️ Sign in failed: ${errorMessage}`)
+      }
     } finally {
       setIsLoading(false)
     }
@@ -85,9 +96,18 @@ export default function SignInPage() {
         redirect: false 
       })
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
       console.error('Social sign in error:', error)
-      toast.error('Social sign in failed: ' + errorMessage)
+      
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      
+      if (errorMessage.toLowerCase().includes('popup') || 
+          errorMessage.toLowerCase().includes('blocked')) {
+        toast.error('📵 Popup blocked. Please allow popups for this site and try again.')
+      } else if (errorMessage.toLowerCase().includes('network')) {
+        toast.error('🌐 Network error. Please check your connection and try again.')
+      } else {
+        toast.error(`⚠️ ${provider} sign in failed: ${errorMessage}`)
+      }
     } finally {
       setIsLoading(false)
     }
@@ -160,6 +180,15 @@ export default function SignInPage() {
 
             {/* Email Sign In Form */}
             <form onSubmit={handleEmailSignIn} className="space-y-4">
+              {/* Development Testing Info */}
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 text-sm">
+                <p className="text-blue-800 dark:text-blue-200 font-medium mb-1">📝 Testing Guide:
+                </p>
+                <p className="text-blue-700 dark:text-blue-300">
+                  1. First register a new account, then use that email with password: <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded text-xs">password123</code>
+                </p>
+              </div>
+              
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input

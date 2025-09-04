@@ -15,8 +15,9 @@ interface AuthContextType {
   user: User | null
   token: string | null
   isLoading: boolean
+  isNewUser: boolean
   signOut: () => void
-  signIn: (user: User, token: string) => void
+  signIn: (user: User, token: string, isNewUser?: boolean) => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -25,6 +26,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isNewUser, setIsNewUser] = useState(false)
   const { data: session, status } = useSession()
 
   useEffect(() => {
@@ -76,19 +78,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     
     setUser(null)
     setToken(null)
+    setIsNewUser(false)
   }
 
-  const signIn = (newUser: User, newToken: string) => {
+  const signIn = (newUser: User, newToken: string, newUserFlag: boolean = false) => {
     localStorage.setItem('auth_token', newToken)
     localStorage.setItem('user', JSON.stringify(newUser))
     setUser({ ...newUser, provider: 'email' })
     setToken(newToken)
+    setIsNewUser(newUserFlag)
   }
 
   const value = {
     user,
     token,
     isLoading: isLoading || status === 'loading',
+    isNewUser,
     signOut,
     signIn
   }
