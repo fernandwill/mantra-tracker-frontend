@@ -222,7 +222,7 @@ export default function Home() {
           <div className="text-center flex-1">
             <OmLogo className="w-16 h-16 mb-4 mx-auto" />
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-pink-500 to-orange-400 bg-clip-text text-transparent">
-              Mantra Tracker
+              Mantrapurna
             </h1>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
               Cultivate mindfulness and track your spiritual journey with
@@ -302,7 +302,7 @@ export default function Home() {
         </div>
 
         {/* Quick Access */}
-        <Card className="border-0 shadow-xl mb-8">
+        <Card className="border-0 shadow-xl mb-8 bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
           <CardHeader>
             <CardTitle className="text-xl">Quick Access</CardTitle>
             <CardDescription>

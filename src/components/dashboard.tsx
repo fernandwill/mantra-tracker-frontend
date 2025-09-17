@@ -108,7 +108,7 @@ export function Dashboard() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 gap-6">
-        <Card className="border-0 shadow-lg">
+        <Card className="border-0 shadow-lg bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
           <CardHeader>
             <CardTitle className="text-lg flex items-center">
               <Calendar className="w-5 h-5 mr-2 text-indigo-500" />
@@ -125,7 +125,7 @@ export function Dashboard() {
       </div>
 
       {/* Most Practiced Mantras */}
-      <Card className="border-0 shadow-lg">
+      <Card className="border-0 shadow-lg bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
         <CardHeader>
           <CardTitle className="text-lg">Most Practiced Mantras</CardTitle>
           <CardDescription>
@@ -162,7 +162,7 @@ export function Dashboard() {
 
 
       {/* Achievements */}
-      <Card className="border-0 shadow-lg">
+      <Card className="border-0 shadow-lg bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
         <CardHeader>
           <CardTitle className="text-lg flex items-center">
             <Trophy className="w-5 h-5 mr-2 text-yellow-500" />

@@ -197,7 +197,7 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
 
   if (mantras.length === 0) {
     return (
-      <Card className="border-0 shadow-xl">
+      <Card className="border-0 shadow-xl bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
         <CardHeader>
           <CardTitle className="text-xl">Your Mantras</CardTitle>
           <CardDescription>
@@ -218,7 +218,7 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
 
   return (
     <>
-      <Card className="border-0 shadow-xl">
+      <Card className="border-0 shadow-xl bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <div>
             <CardTitle className="text-xl">Your Mantras</CardTitle>
@@ -291,7 +291,7 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
                     onTouchStart={() => handleTouchStart(mantra.id)}
                     onTouchEnd={handleTouchEnd}
                     className={`flex-1 transition-all duration-150 ${
-                      touchedButton === mantra.id 
+                      touchedButton === mantraId 
                         ? 'transform scale-95 bg-primary/90 shadow-sm' 
                         : 'active:scale-95 active:bg-primary/90'
                     }`}

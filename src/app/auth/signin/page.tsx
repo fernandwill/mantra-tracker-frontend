@@ -188,14 +188,6 @@ export default function SignInPage() {
 
             {/* Email Sign In Form */}
             <form onSubmit={handleEmailSignIn} className="space-y-4">
-              {/* Development Testing Info */}
-              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 text-sm">
-                <p className="text-blue-800 dark:text-blue-200 font-medium mb-1">📝 Testing Guide:
-                </p>
-                <p className="text-blue-700 dark:text-blue-300">
-                  1. First register a new account, then use that email with password: <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded text-xs">password123</code>
-                </p>
-              </div>
               
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
