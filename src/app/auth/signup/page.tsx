@@ -52,9 +52,9 @@ export default function SignUpPage() {
   // Show loading state while checking authentication
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20 flex items-center justify-center">
         <div className="text-center">
-          <OmLogo className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 animate-pulse p-2" />
+          <OmLogo className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-pink-400 to-orange-300 mb-4 animate-pulse p-2" />
         </div>
       </div>
     )
@@ -141,12 +141,12 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20 flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center">
-          <OmLogo className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 p-2" />
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+          <OmLogo className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-pink-400 to-orange-300 mb-4 p-2" />
+          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-pink-500 to-orange-400 bg-clip-text text-transparent">
             Join Mantra Tracker
           </h1>
           <p className="text-muted-foreground mt-2">
@@ -288,7 +288,7 @@ export default function SignUpPage() {
 
               <Button 
                 type="submit" 
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                className="w-full bg-gradient-to-r from-pink-500 to-orange-400 hover:from-pink-600 hover:to-orange-500"
                 disabled={isLoading}
               >
                 <User className="w-4 h-4 mr-2" />
@@ -301,7 +301,7 @@ export default function SignUpPage() {
               <span className="text-muted-foreground">Already have an account? </span>
               <Link 
                 href="/auth/signin" 
-                className="text-indigo-600 hover:text-indigo-500 font-medium"
+                className="text-pink-600 hover:text-pink-500 font-medium"
               >
                 Sign in
               </Link>

@@ -118,9 +118,9 @@ export default function Home() {
   // Show loading state while checking authentication
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20 flex items-center justify-center">
         <div className="text-center">
-          <OmLogo className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 animate-pulse p-2" />
+          <OmLogo className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-pink-400 to-orange-300 mb-4 animate-pulse p-2" />
         </div>
       </div>
     );
@@ -211,7 +211,7 @@ export default function Home() {
   // Cloud sync functionality removed
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
       <main className="container mx-auto px-4 py-8 md:py-12">
         {/* Mobile Theme Toggle & User Profile - Top */}
         <div className="flex justify-end items-center gap-3 mb-4 md:hidden">
@@ -222,8 +222,8 @@ export default function Home() {
         {/* Header Section */}
         <header className="flex justify-between items-start mb-12">
           <div className="text-center flex-1">
-            <OmLogo className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 p-2" />
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            <OmLogo className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-pink-400 to-orange-300 mb-4 p-2" />
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-pink-500 to-orange-400 bg-clip-text text-transparent">
               Mantra Tracker
             </h1>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -239,7 +239,7 @@ export default function Home() {
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20">
+          <Card className="border-0 shadow-lg bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
                 <Target className="w-4 h-4 mr-2" />
@@ -247,7 +247,7 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">
+              <div className="text-3xl font-bold text-pink-600 dark:text-pink-400">
                 {mantras.length}
               </div>
               <p className="text-sm text-muted-foreground mt-1">
@@ -260,7 +260,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20">
+          <Card className="border-0 shadow-lg bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
                 <Clock className="w-4 h-4 mr-2" />
@@ -268,7 +268,7 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
+              <div className="text-3xl font-bold text-pink-600 dark:text-pink-400">
                 {totalRepetitions}
               </div>
               <p className="text-sm text-muted-foreground mt-1">
@@ -281,7 +281,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20">
+          <Card className="border-0 shadow-lg bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
                 <TrendingUp className="w-4 h-4 mr-2" />
@@ -289,7 +289,7 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">
+              <div className="text-3xl font-bold text-pink-600 dark:text-pink-400">
                 {streak}
               </div>
               <p className="text-sm text-muted-foreground mt-1">
@@ -350,7 +350,7 @@ export default function Home() {
               variant="ghost"
               className={`rounded-none px-4 py-2 font-medium transition-colors mx-2 ${
                 activeTab === "mantras"
-                  ? "border-b-2 border-indigo-500 text-foreground"
+                  ? "border-b-2 border-pink-500 text-foreground"
                   : "border-b-2 border-transparent text-muted-foreground hover:text-foreground hover:bg-transparent"
               }`}
               onClick={() => setActiveTab("mantras")}
@@ -362,7 +362,7 @@ export default function Home() {
               variant="ghost"
               className={`rounded-none px-4 py-2 font-medium transition-colors mx-2 ${
                 activeTab === "statistics"
-                  ? "border-b-2 border-indigo-500 text-foreground"
+                  ? "border-b-2 border-pink-500 text-foreground"
                   : "border-b-2 border-transparent text-muted-foreground hover:text-foreground hover:bg-transparent"
               }`}
               onClick={() => setActiveTab("statistics")}
