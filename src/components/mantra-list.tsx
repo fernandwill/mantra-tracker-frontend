@@ -291,7 +291,7 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
                     onTouchStart={() => handleTouchStart(mantra.id)}
                     onTouchEnd={handleTouchEnd}
                     className={`flex-1 transition-all duration-150 ${
-                      touchedButton === mantraId 
+                      touchedButton === mantra.id 
                         ? 'transform scale-95 bg-primary/90 shadow-sm' 
                         : 'active:scale-95 active:bg-primary/90'
                     }`}
