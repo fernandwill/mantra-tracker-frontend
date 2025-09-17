@@ -17,15 +17,13 @@ import { toast } from 'sonner'
 
 // Custom Om Logo component
 const OmLogo = ({ className }: { className?: string }) => (
-  <div className={className}>
-    <Image 
-      src="/mantra-om-logo.svg" 
-      alt="Om Symbol" 
-      width={64}
-      height={64}
-      className="w-full h-full"
-    />
-  </div>
+  <Image 
+    src="/mantra-om-logo.svg" 
+    alt="Om Symbol" 
+    width={64}
+    height={64}
+    className={className}
+  />
 );
 
 export default function SignInPage() {
@@ -49,7 +47,7 @@ export default function SignInPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20 flex items-center justify-center">
         <div className="text-center">
-          <OmLogo className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-pink-400 to-orange-300 mb-4 animate-pulse p-2" />
+          <OmLogo className="w-16 h-16 mb-4 animate-pulse mx-auto" />
         </div>
       </div>
     )
@@ -130,7 +128,7 @@ export default function SignInPage() {
       <div className="w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center">
-          <OmLogo className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-pink-400 to-orange-300 mb-4 p-2" />
+          <OmLogo className="w-16 h-16 mb-4 animate-pulse mx-auto" />
           <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-pink-500 to-orange-400 bg-clip-text text-transparent">
             Welcome Back
           </h1>
