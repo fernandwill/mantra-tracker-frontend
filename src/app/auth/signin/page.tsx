@@ -138,7 +138,7 @@ export default function SignInPage() {
         </div>
 
         {/* Sign In Card */}
-        <Card className="border-0 shadow-xl">
+        <Card className="border-0 shadow-xl bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
           <CardHeader>
             <CardTitle>Sign In</CardTitle>
             <CardDescription>
