@@ -244,17 +244,8 @@ export function Achievements({ className }: AchievementsProps) {
     .slice(0, 3)
   
   return (
-    <Card className={className}>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Trophy className="h-5 w-5 text-yellow-500" />
-          Achievements
-          <Badge variant="secondary" className="ml-auto">
-            {unlockedAchievements.length}/{achievements.length}
-          </Badge>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
+    <div className={className}>
+      <div className="space-y-6">
         {/* Unlocked Achievements */}
         {unlockedAchievements.length > 0 && (
           <div className="space-y-3">
@@ -321,7 +312,7 @@ export function Achievements({ className }: AchievementsProps) {
             <p className="text-muted-foreground">Start practicing to unlock achievements!</p>
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }

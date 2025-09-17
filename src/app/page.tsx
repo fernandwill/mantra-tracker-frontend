@@ -310,7 +310,7 @@ export default function Home() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="border-0 shadow-xl bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
               <CreateMantraDialog
                 onCreate={handleCreateMantra}
                 id="create-mantra-button"
