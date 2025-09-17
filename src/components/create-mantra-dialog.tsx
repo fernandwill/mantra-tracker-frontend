@@ -58,7 +58,8 @@ export function CreateMantraDialog({ onCreate, open, onOpenChange, id }: CreateM
       <DialogTrigger asChild>
         <Button 
           size="lg" 
-          className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+          variant="outline"
+          className="flex-1 border-2 hover:bg-muted/50"
           {...(id && { id })}
         >
           <Plus className="w-4 h-4 mr-2" />
