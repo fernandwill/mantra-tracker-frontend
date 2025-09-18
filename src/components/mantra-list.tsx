@@ -228,7 +228,7 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
           </div>
           <Button 
             onClick={() => document.getElementById('create-mantra-button')?.click()}
-            className="gradient-accent-bg text-white shadow-lg hover:shadow-xl transition-all duration-200"
+            className="bg-gradient-to-r from-pink-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 text-white shadow-lg hover:shadow-xl transition-all duration-200"
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Mantra
