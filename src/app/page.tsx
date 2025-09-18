@@ -310,7 +310,7 @@ export default function Home() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex gap-4 justify-center">
+            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
               <CreateMantraDialog
                 onCreate={handleCreateMantra}
                 id="create-mantra-button"
@@ -319,7 +319,7 @@ export default function Home() {
               <Button
                 size="lg"
                 variant="outline"
-                className="flex-1 border-2 hover:bg-muted/50"
+                className="w-full flex-1 border-2 hover:bg-muted/50"
                 onClick={handleExportData}
                 disabled={isExporting}
               >
@@ -330,7 +330,7 @@ export default function Home() {
               <Button
                 size="lg"
                 variant="outline"
-                className="flex-1 border-2 hover:bg-muted/50"
+                className="w-full flex-1 border-2 hover:bg-muted/50"
                 onClick={handleImportData}
                 disabled={isImporting}
               >
