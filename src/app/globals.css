@@ -38,6 +38,12 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --gradient-accent-from: #ec4899;
+    --gradient-accent-to: #fb923c;
+    --gradient-accent-hover-from: #db2777;
+    --gradient-accent-hover-to: #f97316;
+    --gradient-surface-from: #fdf2f8;
+    --gradient-surface-to: #fff7ed;
   }
 
   .dark {
@@ -73,6 +79,12 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --gradient-accent-from: #ec4899;
+    --gradient-accent-to: #fb923c;
+    --gradient-accent-hover-from: #db2777;
+    --gradient-accent-hover-to: #f97316;
+    --gradient-surface-from: rgba(131, 24, 67, 0.2);
+    --gradient-surface-to: rgba(124, 45, 18, 0.2);
   }
 }
 
@@ -84,3 +96,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+.gradient-surface {
+  background-image: linear-gradient(135deg, var(--gradient-surface-from), var(--gradient-surface-to));
+}
+
+.gradient-accent-bg {
+  background-image: linear-gradient(90deg, var(--gradient-accent-from), var(--gradient-accent-to));
+  transition: background-image 150ms ease-in-out, filter 150ms ease-in-out;
+}
+
+.gradient-accent-bg:hover,
+.gradient-accent-bg:focus-visible {
+  background-image: linear-gradient(90deg, var(--gradient-accent-hover-from), var(--gradient-accent-hover-to));
+}
+
+.gradient-accent-text {
+  background-image: linear-gradient(90deg, var(--gradient-accent-from), var(--gradient-accent-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+

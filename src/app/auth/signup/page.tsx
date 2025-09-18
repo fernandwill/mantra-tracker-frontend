@@ -50,7 +50,7 @@ export default function SignUpPage() {
   // Show loading state while checking authentication
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20 flex items-center justify-center">
+      <div className="min-h-screen gradient-surface flex items-center justify-center">
         <div className="text-center">
           <OmLogo className="w-16 h-16 mb-4 animate-pulse mx-auto" />
         </div>
@@ -139,12 +139,12 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20 flex items-center justify-center p-4">
+    <div className="min-h-screen gradient-surface flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center">
           <OmLogo className="w-16 h-16 mb-4 mx-auto" />
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-pink-500 to-orange-400 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold tracking-tight gradient-accent-text">
             Join Mantra Tracker
           </h1>
           <p className="text-muted-foreground mt-2">
@@ -153,7 +153,7 @@ export default function SignUpPage() {
         </div>
 
         {/* Sign Up Card */}
-        <Card className="border-0 shadow-xl bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
+        <Card className="border-0 shadow-xl gradient-surface">
           <CardHeader>
             <CardTitle>Create Account</CardTitle>
             <CardDescription>
@@ -286,7 +286,7 @@ export default function SignUpPage() {
 
               <Button 
                 type="submit" 
-                className="w-full bg-gradient-to-r from-pink-500 to-orange-400 hover:from-pink-600 hover:to-orange-500"
+                className="w-full gradient-accent-bg text-white"
                 disabled={isLoading}
               >
                 <User className="w-4 h-4 mr-2" />
@@ -315,3 +315,4 @@ export default function SignUpPage() {
     </div>
   )
 }
+

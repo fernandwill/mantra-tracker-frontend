@@ -197,7 +197,7 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
 
   if (mantras.length === 0) {
     return (
-      <Card className="border-0 shadow-xl bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
+      <Card className="border-0 shadow-xl gradient-surface">
         <CardHeader>
           <CardTitle className="text-xl">Your Mantras</CardTitle>
           <CardDescription>
@@ -218,7 +218,7 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
 
   return (
     <>
-      <Card className="border-0 shadow-xl bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
+      <Card className="border-0 shadow-xl gradient-surface">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <div>
             <CardTitle className="text-xl">Your Mantras</CardTitle>
@@ -228,7 +228,7 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
           </div>
           <Button 
             onClick={() => document.getElementById('create-mantra-button')?.click()}
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+            className="gradient-accent-bg text-white shadow-lg hover:shadow-xl transition-all duration-200"
           >
             <Plus className="w-4 h-4 mr-2" />
             Add Mantra
@@ -362,3 +362,4 @@ export function MantraList({ mantras, onUpdate }: MantraListProps) {
     </>
   )
 }
+

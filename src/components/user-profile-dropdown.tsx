@@ -120,7 +120,7 @@ export function UserProfileDropdown() {
         <Button variant="ghost" className="relative h-10 w-10 rounded-full">
           <Avatar className="h-10 w-10">
             <AvatarImage src={user.avatar} alt={user.name} />
-            <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white">
+            <AvatarFallback className="gradient-accent-bg text-white">
               {getInitials(user.name)}
             </AvatarFallback>
           </Avatar>
@@ -157,3 +157,4 @@ export function UserProfileDropdown() {
     </DropdownMenu>
   )
 }
+

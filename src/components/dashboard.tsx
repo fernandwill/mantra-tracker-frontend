@@ -26,7 +26,7 @@ export function Dashboard() {
     return (
       <div className="flex justify-center items-center p-8">
         <div className="animate-pulse">
-          <div className="rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 w-16 h-16" />
+          <div className="rounded-full gradient-accent-bg w-16 h-16" />
         </div>
       </div>
     )
@@ -53,7 +53,7 @@ export function Dashboard() {
     <div className="space-y-6">
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border-0 shadow-lg bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20">
+        <Card className="border-0 shadow-lg gradient-surface">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
               <Target className="w-4 h-4 mr-2" />
@@ -66,7 +66,7 @@ export function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20">
+        <Card className="border-0 shadow-lg gradient-surface">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
               <Clock className="w-4 h-4 mr-2" />
@@ -79,7 +79,7 @@ export function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20">
+        <Card className="border-0 shadow-lg gradient-surface">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
               <TrendingUp className="w-4 h-4 mr-2" />
@@ -92,7 +92,7 @@ export function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="border-0 shadow-lg bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20">
+        <Card className="border-0 shadow-lg gradient-surface">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
               <CheckCircle className="w-4 h-4 mr-2" />
@@ -108,7 +108,7 @@ export function Dashboard() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 gap-6">
-        <Card className="border-0 shadow-lg bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
+        <Card className="border-0 shadow-lg gradient-surface">
           <CardHeader>
             <CardTitle className="text-lg flex items-center">
               <Calendar className="w-5 h-5 mr-2 text-indigo-500" />
@@ -125,7 +125,7 @@ export function Dashboard() {
       </div>
 
       {/* Most Practiced Mantras */}
-      <Card className="border-0 shadow-lg bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
+      <Card className="border-0 shadow-lg gradient-surface">
         <CardHeader>
           <CardTitle className="text-lg">Most Practiced Mantras</CardTitle>
           <CardDescription>
@@ -162,7 +162,7 @@ export function Dashboard() {
 
 
       {/* Achievements */}
-      <Card className="border-0 shadow-lg bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
+      <Card className="border-0 shadow-lg gradient-surface">
         <CardHeader>
           <CardTitle className="text-lg flex items-center">
             <Trophy className="w-5 h-5 mr-2 text-yellow-500" />
@@ -179,3 +179,4 @@ export function Dashboard() {
     </div>
   )
 }
+

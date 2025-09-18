@@ -116,7 +116,7 @@ export default function Home() {
   // Show loading state while checking authentication
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20 flex items-center justify-center">
+      <div className="min-h-screen gradient-surface flex items-center justify-center">
         <div className="text-center">
           <OmLogo className="w-16 h-16 mb-4 animate-pulse mx-auto" />
         </div>
@@ -209,7 +209,7 @@ export default function Home() {
   // Cloud sync functionality removed
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
+    <div className="min-h-screen gradient-surface">
       <main className="container mx-auto px-4 py-8 md:py-12">
         {/* Mobile Theme Toggle & User Profile - Top */}
         <div className="flex justify-end items-center gap-3 mb-4 md:hidden">
@@ -221,7 +221,7 @@ export default function Home() {
         <header className="flex justify-between items-start mb-12">
           <div className="text-center flex-1">
             <OmLogo className="w-16 h-16 mb-4 mx-auto" />
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-pink-500 to-orange-400 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight gradient-accent-text">
               Mantrapurna
             </h1>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -237,7 +237,7 @@ export default function Home() {
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
+          <Card className="border-0 shadow-lg gradient-surface">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
                 <Target className="w-4 h-4 mr-2" />
@@ -258,7 +258,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
+          <Card className="border-0 shadow-lg gradient-surface">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
                 <Clock className="w-4 h-4 mr-2" />
@@ -279,7 +279,7 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
+          <Card className="border-0 shadow-lg gradient-surface">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
                 <TrendingUp className="w-4 h-4 mr-2" />
@@ -302,7 +302,7 @@ export default function Home() {
         </div>
 
         {/* Quick Access */}
-        <Card className="border-0 shadow-xl mb-8 bg-gradient-to-br from-pink-50 to-orange-50 dark:from-pink-900/20 dark:to-orange-900/20">
+        <Card className="border-0 shadow-xl mb-8 gradient-surface">
           <CardHeader>
             <CardTitle className="text-xl">Quick Access</CardTitle>
             <CardDescription>
