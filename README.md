@@ -1,5 +1,7 @@
 # Mantrapurna
 
+<img width="1905" height="951" alt="mantrapurna" src="https://github.com/user-attachments/assets/c07f7111-b8b2-440d-bb58-3c8667ea0d9d" />
+
 Mantrapurna is a mindfulness practice companion built with Next.js 15 and React 19. It helps practitioners create mantra libraries, log repetitions, track streaks, and review progress through an accessible dashboard. The application ships with an offline-first data layer, optional API integration, and polished UI elements tailored for touch and desktop experiences.
 
 ## Key Features
