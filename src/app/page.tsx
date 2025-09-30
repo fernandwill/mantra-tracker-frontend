@@ -17,21 +17,8 @@ import { MantraList } from "@/components/mantra-list";
 import { Dashboard } from "@/components/dashboard";
 import { UserProfileDropdown } from "@/components/user-profile-dropdown";
 import { useAuth } from "@/lib/auth-context";
-import {
-  Download,
-  Upload,
-  Target,
-  Clock,
-  TrendingUp,
-  BookOpen,
-  BarChart,
-} from "lucide-react";
-import {
-  getMantras,
-  addMantra,
-  getCurrentStreak,
-  getTotalSessions,
-} from "@/lib/mantra-service";
+import { Download, Upload, BookOpen, BarChart } from "lucide-react";
+import { getMantras, addMantra } from "@/lib/mantra-service";
 import { Mantra } from "@/lib/types";
 import { DataExportService } from "@/lib/data-export-service";
 import { toast } from "sonner";
@@ -49,8 +36,6 @@ const OmLogo = ({ className }: { className?: string }) => (
 
 export default function Home() {
   const [mantras, setMantras] = useState<Mantra[]>([]);
-  const [streak, setStreak] = useState(0);
-  const [totalRepetitions, setTotalRepetitions] = useState(0);
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [activeTab, setActiveTab] = useState<"mantras" | "statistics">(
@@ -76,13 +61,6 @@ export default function Home() {
   const refreshData = () => {
     const updatedMantras = getMantras();
     setMantras(updatedMantras);
-    setStreak(getCurrentStreak());
-
-    // Calculate total repetitions across all mantras
-    const total = updatedMantras.reduce((sum, mantra) => {
-      return sum + getTotalSessions(mantra.id);
-    }, 0);
-    setTotalRepetitions(total);
   };
 
   useEffect(() => {
@@ -234,72 +212,6 @@ export default function Home() {
             <UserProfileDropdown />
           </div>
         </header>
-
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card className="border-0 shadow-lg gradient-surface">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
-                <Target className="w-4 h-4 mr-2" />
-                Active Mantras
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-pink-600 dark:text-pink-400">
-                {mantras.length}
-              </div>
-              <p className="text-sm text-muted-foreground mt-1">
-                {mantras.length === 0
-                  ? "Start your journey"
-                  : mantras.length === 1
-                  ? "1 active mantra"
-                  : `${mantras.length} active mantras`}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 shadow-lg gradient-surface">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
-                <Clock className="w-4 h-4 mr-2" />
-                Total Repetitions
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-pink-600 dark:text-pink-400">
-                {totalRepetitions}
-              </div>
-              <p className="text-sm text-muted-foreground mt-1">
-                {totalRepetitions === 0
-                  ? "Begin today"
-                  : totalRepetitions === 1
-                  ? "1 repetition"
-                  : `${totalRepetitions} repetitions`}
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 shadow-lg gradient-surface">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
-                <TrendingUp className="w-4 h-4 mr-2" />
-                Current Streak
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-pink-600 dark:text-pink-400">
-                {streak}
-              </div>
-              <p className="text-sm text-muted-foreground mt-1">
-                {streak === 0
-                  ? "Days in a row"
-                  : streak === 1
-                  ? "1 day streak"
-                  : `${streak} days streak`}
-              </p>
-            </CardContent>
-          </Card>
-        </div>
 
         {/* Quick Access */}
         <Card className="border-0 shadow-xl mb-8 gradient-surface">

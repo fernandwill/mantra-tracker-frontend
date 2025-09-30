@@ -57,12 +57,18 @@ export function Dashboard() {
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground flex items-center">
               <Target className="w-4 h-4 mr-2" />
-              Total Mantras
+              Active Mantras
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{stats.totalMantras}</div>
-            <p className="text-sm text-muted-foreground mt-1">Active practices</p>
+            <div className="text-3xl font-bold text-pink-600 dark:text-pink-400">{stats.totalMantras}</div>
+            <p className="text-sm text-muted-foreground mt-1">
+              {stats.totalMantras === 0
+                ? 'Start your journey'
+                : stats.totalMantras === 1
+                ? '1 active mantra'
+                : `${stats.totalMantras} active mantras`}
+            </p>
           </CardContent>
         </Card>
 
@@ -74,8 +80,14 @@ export function Dashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">{stats.totalSessions}</div>
-            <p className="text-sm text-muted-foreground mt-1">Repetitions tracked</p>
+            <div className="text-3xl font-bold text-pink-600 dark:text-pink-400">{stats.totalSessions}</div>
+            <p className="text-sm text-muted-foreground mt-1">
+              {stats.totalSessions === 0
+                ? 'Begin today'
+                : stats.totalSessions === 1
+                ? '1 repetition'
+                : `${stats.totalSessions} repetitions`}
+            </p>
           </CardContent>
         </Card>
 
@@ -87,8 +99,14 @@ export function Dashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-amber-600 dark:text-amber-400">{stats.currentStreak}</div>
-            <p className="text-sm text-muted-foreground mt-1">Days in a row</p>
+            <div className="text-3xl font-bold text-pink-600 dark:text-pink-400">{stats.currentStreak}</div>
+            <p className="text-sm text-muted-foreground mt-1">
+              {stats.currentStreak === 0
+                ? 'Days in a row'
+                : stats.currentStreak === 1
+                ? '1 day streak'
+                : `${stats.currentStreak} days streak`}
+            </p>
           </CardContent>
         </Card>
 
