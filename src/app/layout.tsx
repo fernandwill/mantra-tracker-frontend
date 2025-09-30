@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mantra Tracker - Mindful Practice Companion",
+  title: "Mantrapurna - Mindful Practice Companion",
   description: "Cultivate mindfulness and track your spiritual journey with intention and grace. Beautifully designed mantra tracking for modern practitioners.",
   keywords: ["mantra", "meditation", "mindfulness", "spiritual practice", "journey tracking"],
   authors: [{ name: "Mantra Tracker Team" }],
@@ -23,13 +23,13 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://mantra-tracker.vercel.app",
-    title: "Mantra Tracker - Mindful Practice Companion",
+    title: "Mantrapurna - Mindful Practice Companion",
     description: "Cultivate mindfulness and track your spiritual journey with intention and grace",
-    siteName: "Mantra Tracker",
+    siteName: "Mantrapurna",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mantra Tracker - Mindful Practice Companion",
+    title: "Mantrapurna - Mindful Practice Companion",
     description: "Cultivate mindfulness and track your spiritual journey with intention and grace",
   },
   robots: {
