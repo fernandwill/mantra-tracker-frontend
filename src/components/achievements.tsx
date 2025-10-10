@@ -37,75 +37,61 @@ export function Achievements({ className }: AchievementsProps) {
   const sessions = getSessions()
   
   const stats = useMemo(() => {
-    if (sessions.length === 0) {
-      return {
-        currentStreak: 0,
-        longestStreak: 0,
-        totalSessions: 0,
-        totalDays: 0,
-        morningPractices: 0,
-        eveningPractices: 0
-      }
+    const base = {
+      currentStreak: 0,
+      longestStreak: 0,
+      totalSessions: 0,
+      totalDays: 0,
+      morningPractices: 0,
+      eveningPractices: 0
     }
-    
-    // Calculate practice dates
-    const practiceDates = new Set<string>()
-    let totalSessions = 0
-    let morningPractices = 0
-    let eveningPractices = 0
-    
-    sessions.forEach(session => {
-      const date = new Date(session.date)
-      date.setHours(0, 0, 0, 0)
-      practiceDates.add(date.toISOString().split('T')[0])
-      totalSessions += session.count
-      
-      // Check if morning (6 AM - 12 PM) or evening (6 PM - 11 PM)
-      const hour = new Date(session.date).getHours()
-      if (hour >= 6 && hour < 12) morningPractices++
-      if (hour >= 18 && hour < 23) eveningPractices++
-    })
-    
-    const sortedDates = Array.from(practiceDates).sort()
-    
-    // Calculate current streak
-    let currentStreak = 0
+
+    if (!sessions.length) return base
+
+    const { practiceDates, totalSessions, morningPractices, eveningPractices } = sessions.reduce(
+      (acc, session) => {
+        const sessionDate = new Date(session.date)
+        const hour = sessionDate.getHours()
+        sessionDate.setHours(0, 0, 0, 0)
+        acc.practiceDates.add(sessionDate.toISOString().split('T')[0])
+        acc.totalSessions += session.count
+        acc.morningPractices += Number(hour >= 6 && hour < 12)
+        acc.eveningPractices += Number(hour >= 18 && hour < 23)
+        return acc
+      },
+      { practiceDates: new Set<string>(), totalSessions: 0, morningPractices: 0, eveningPractices: 0 }
+    )
+
+    const sortedDates = [...practiceDates].sort()
     const today = new Date()
     today.setHours(0, 0, 0, 0)
-    
-    const checkDate = new Date(today)
-    while (true) {
-      const dateKey = checkDate.toISOString().split('T')[0]
-      if (practiceDates.has(dateKey)) {
-        currentStreak++
-        checkDate.setDate(checkDate.getDate() - 1)
-      } else {
-        if (checkDate.getTime() === today.getTime()) {
-          checkDate.setDate(checkDate.getDate() - 1)
-          continue
-        }
-        break
-      }
+
+    const startDate = new Date(today)
+    if (!practiceDates.has(today.toISOString().split('T')[0])) {
+      startDate.setDate(startDate.getDate() - 1)
     }
-    
-    // Calculate longest streak
-    let longestStreak = 0
-    let tempStreak = 1
-    
+
+    let currentStreak = 0
+    for (
+      const checkDate = new Date(startDate);
+      practiceDates.has(checkDate.toISOString().split('T')[0]);
+      checkDate.setDate(checkDate.getDate() - 1)
+    ) {
+      currentStreak++
+    }
+
+    let longestStreak = sortedDates.length ? 1 : 0
+    let tempStreak = longestStreak
+
     for (let i = 1; i < sortedDates.length; i++) {
       const prevDate = new Date(sortedDates[i - 1])
       const currDate = new Date(sortedDates[i])
-      const dayDiff = (currDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24)
-      
-      if (dayDiff === 1) {
-        tempStreak++
-      } else {
-        longestStreak = Math.max(longestStreak, tempStreak)
-        tempStreak = 1
-      }
+      const dayDiff = (currDate.getTime() - prevDate.getTime()) / 86_400_000
+
+      tempStreak = dayDiff === 1 ? tempStreak + 1 : 1
+      longestStreak = Math.max(longestStreak, tempStreak)
     }
-    longestStreak = Math.max(longestStreak, tempStreak)
-    
+
     return {
       currentStreak,
       longestStreak,
