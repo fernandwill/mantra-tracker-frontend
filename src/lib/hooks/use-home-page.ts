@@ -22,9 +22,10 @@ export function useHomePage() {
   const [mantras, setMantras] = useState<Mantra[]>([]);
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  const [isSyncingDropbox, setIsSyncingDropbox] = useState(false);
   const [activeTab, setActiveTab] = useState<HomeTab>("mantras");
 
-  const { user, isLoading, isNewUser } = useAuth();
+  const { user, token, isLoading, isNewUser } = useAuth();
   const router = useRouter();
 
   const refreshData = useCallback(() => {
@@ -151,17 +152,59 @@ export function useHomePage() {
     input.click();
   }, [refreshData]);
 
+  const handleSyncToDropbox = useCallback(async () => {
+    if (!token) {
+      toast.error("Dropbox sync requires authentication. Please sign in again.");
+      return;
+    }
+
+    setIsSyncingDropbox(true);
+
+    try {
+      const content = DataExportService.exportAsJSON();
+      const response = await fetch("/api/dropbox/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          filename: "mantra-tracker-backup",
+          content,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        const errorMessage =
+          (errorData && (errorData.error || errorData.details)) ||
+          "Failed to sync with Dropbox.";
+        throw new Error(errorMessage);
+      }
+
+      toast.success("Backup synced to Dropbox successfully!");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      toast.error(`Dropbox sync failed: ${errorMessage}`);
+      console.error("Dropbox sync error:", error);
+    } finally {
+      setIsSyncingDropbox(false);
+    }
+  }, [token]);
+
   return {
     user,
     isLoading,
     mantras,
     isExporting,
     isImporting,
+    isSyncingDropbox,
     activeTab,
     setActiveTab,
     handleCreateMantra,
     handleUpdateMantras,
     handleExportData,
     handleImportData,
+    handleSyncToDropbox,
   };
 }
