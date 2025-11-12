@@ -1,4 +1,4 @@
-import { Download, Upload } from "lucide-react";
+import { CloudUpload, Download, Upload } from "lucide-react";
 
 import { CreateMantraDialog } from "@/components/create-mantra-dialog";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,8 @@ interface QuickAccessCardProps {
   onImport: () => void;
   isExporting: boolean;
   isImporting: boolean;
+  onSyncToDropbox: () => void;
+  isSyncingDropbox: boolean;
 }
 
 export function QuickAccessCard({
@@ -24,6 +26,8 @@ export function QuickAccessCard({
   onImport,
   isExporting,
   isImporting,
+  onSyncToDropbox,
+  isSyncingDropbox,
 }: QuickAccessCardProps) {
   return (
     <Card className="border-0 shadow-xl mb-8 gradient-surface">
@@ -55,6 +59,17 @@ export function QuickAccessCard({
           >
             <Upload className="w-4 h-4 mr-2" />
             {isImporting ? "Importing..." : "Import Data"}
+          </Button>
+
+          <Button
+            size="lg"
+            variant="outline"
+            className="w-full flex-1 border-2 hover:bg-muted/50"
+            onClick={onSyncToDropbox}
+            disabled={isSyncingDropbox}
+          >
+            <CloudUpload className="w-4 h-4 mr-2" />
+            {isSyncingDropbox ? "Syncing..." : "Sync to Dropbox"}
           </Button>
         </div>
       </CardContent>

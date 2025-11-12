@@ -60,6 +60,9 @@ Configure secrets in `.env.local`. The most commonly used variables are listed b
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Optional | Enables Google OAuth through NextAuth. |
 | `GITHUB_ID` / `GITHUB_SECRET` | Optional | Enables GitHub OAuth through NextAuth. |
 | `NEXT_PUBLIC_USE_API` | Optional | When set to `true`, the UI prefers REST API routes over local storage. |
+| `DROPBOX_ACCESS_TOKEN` | Optional* | Required to enable Dropbox backup uploads via `/api/dropbox/upload`. |
+
+\*Optional for the base experience but required before enabling Dropbox synchronisation in production environments.
 
 ## Project Structure
 ```

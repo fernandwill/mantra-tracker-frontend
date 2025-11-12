@@ -16,12 +16,14 @@ export default function Home() {
     mantras,
     isExporting,
     isImporting,
+    isSyncingDropbox,
     activeTab,
     setActiveTab,
     handleCreateMantra,
     handleUpdateMantras,
     handleExportData,
     handleImportData,
+    handleSyncToDropbox,
   } = useHomePage();
 
   if (isLoading) {
@@ -43,6 +45,8 @@ export default function Home() {
           onImport={handleImportData}
           isExporting={isExporting}
           isImporting={isImporting}
+          onSyncToDropbox={handleSyncToDropbox}
+          isSyncingDropbox={isSyncingDropbox}
         />
         <HomeTabs
           activeTab={activeTab}
